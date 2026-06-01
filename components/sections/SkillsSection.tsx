@@ -97,19 +97,19 @@ export default function SkillsSection() {
         <div className="section-divider mb-20" />
 
         {/* Header */}
-        <div className="mb-14">
+        {/* Centered Chapter Heading */}
+        <div className="text-center w-full max-w-3xl mx-auto mb-5 flex flex-col items-center">
           <motion.span
             custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
             className="eyebrow block mb-4"
           >
-            Skills
+            Skills &amp; Competencies
           </motion.span>
           <motion.h2
             custom={1} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="display-md text-white"
+            className="display-lg text-white font-extrabold tracking-tight uppercase"
           >
-            Built through practice.<br />
-            <span className="gradient-teal">Sharpened by curiosity.</span>
+            SKILLS &amp; COMPETENCIES
           </motion.h2>
         </div>
 

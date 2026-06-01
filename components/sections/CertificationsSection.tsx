@@ -73,7 +73,7 @@ export default function CertificationsSection() {
         <div className="section-divider mb-20" />
 
         {/* Centered Chapter Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-5 flex flex-col items-center">
+        <div className="text-center w-full max-w-3xl mx-auto mb-5 flex flex-col items-center">
           <motion.span
             custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
             className="eyebrow block mb-4"
@@ -88,8 +88,8 @@ export default function CertificationsSection() {
           </motion.h2>
         </div>
 
-        {/* Certifications grid (Balanced gap settings to reduce horizontal congestion) */}
-        <div className="grid sm:grid-cols-2 gap-6 lg:gap-8 mb-8">
+        {/* Certifications grid (Merged into one grid to keep spacing uniform and spacious) */}
+        <div className="grid sm:grid-cols-2 gap-8 lg:gap-10">
           {certifications.map((c, i) => (
             <motion.div
               key={c.title}
@@ -118,10 +118,7 @@ export default function CertificationsSection() {
               </div>
             </motion.div>
           ))}
-        </div>
 
-        {/* Conferences and Seminars Side-by-Side (Reduces vertical clutter and matches grid layout) */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 mb-8">
           {/* 1. Conferences & Academic Events card */}
           <motion.div
             custom={6} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
@@ -179,7 +176,7 @@ export default function CertificationsSection() {
         {/* Mission & Vision quote block at bottom */}
         <motion.div
           custom={8} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-          className="relative card p-8 text-center max-w-4xl mx-auto mt-12 border border-[#2dd4bf]/20 bg-gradient-to-r from-violet-950/10 to-teal-950/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)] animate-pulse-soft"
+          className="relative card p-8 text-center max-w-4xl mx-auto mt-16 lg:mt-24 border border-[#2dd4bf]/20 bg-gradient-to-r from-violet-950/10 to-teal-950/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)] animate-pulse-soft"
         >
           <span className="text-[8px] font-mono text-[#2dd4bf]/70 absolute top-3 right-3 font-bold tracking-widest select-none">[MIS.VIS // PHM.FUTURE]</span>
           <span className="text-[#2dd4bf] text-[9px] font-mono font-bold tracking-widest block mb-3 uppercase text-center">

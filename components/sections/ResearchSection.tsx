@@ -89,7 +89,7 @@ export default function ResearchSection() {
           <div className="section-divider mb-20" />
 
           {/* Centered Chapter Heading */}
-          <div className="text-center max-w-3xl mx-auto mb-5 flex flex-col items-center">
+          <div className="text-center w-full max-w-3xl mx-auto mb-5 flex flex-col items-center">
             <motion.span
               custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
               className="eyebrow block mb-4"

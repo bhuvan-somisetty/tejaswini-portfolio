@@ -144,7 +144,7 @@ export default function HealthcareCommandCenter() {
         <div className="section-divider mb-20" />
 
         {/* Centered Chapter Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-5 flex flex-col items-center">
+        <div className="text-center w-full max-w-3xl mx-auto mb-5 flex flex-col items-center">
           <motion.span
             custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
             className="eyebrow block mb-4"
@@ -243,10 +243,10 @@ export default function HealthcareCommandCenter() {
           </div>
         </motion.div>
 
-        {/* Increased vertical spacing (mt-24 = 96px) between the cards and bottom milestones strip */}
+        {/* Increased vertical spacing (mt-16 lg:mt-20 = 64px-80px) between the cards and bottom milestones strip */}
         <motion.div
           custom={3} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-24 text-center"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-16 lg:mt-20 text-center"
         >
           {milestones.map((m, idx) => (
             <div key={idx} className="card-subtle p-5 border border-[#2dd4bf]/10 bg-[#0f0f1a]/20">
