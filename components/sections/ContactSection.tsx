@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const fadeUp = {
@@ -43,6 +43,15 @@ const availability = [
 export default function ContactSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const [copied, setCopied] = useState(false);
+
+  const handleSendMessage = () => {
+    navigator.clipboard.writeText('tejaswinisomisetty22@gmail.com');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    // Fallback: trigger mailto
+    window.location.href = 'mailto:tejaswinisomisetty22@gmail.com';
+  };
 
   return (
     <section id="contact" className="section-padding scroll-mt-24" ref={ref}>
@@ -96,18 +105,20 @@ export default function ContactSection() {
                       {l.icon}
                     </div>
                     <div>
-                      <div className="text-[#475569] text-[0.65rem] tracking-wider uppercase mb-0.5 font-bold font-mono">{l.label}</div>
+                      <div className="text-[#475569] text-[0.65rem] tracking-wider uppercase mb-1.5 font-bold font-mono">{l.label}</div>
                       {l.href ? (
                         <a
                           href={l.href}
                           target={l.href.startsWith('http') ? '_blank' : undefined}
                           rel="noopener noreferrer"
-                          className="text-[#f1f5f9] text-xs hover:text-[#2dd4bf] transition-colors font-semibold"
+                          className="inline-flex items-center gap-2 text-xs py-1.5 px-3 rounded-lg border border-[#2dd4bf]/20 bg-[#2dd4bf]/5 text-[#2dd4bf] hover:bg-[#2dd4bf]/15 hover:border-[#2dd4bf]/40 hover:text-white transition-all duration-300 font-mono font-semibold"
                         >
-                          {l.value}
+                          {l.value} ↗
                         </a>
                       ) : (
-                        <span className="text-[#f1f5f9] text-xs font-semibold">{l.value}</span>
+                        <span className="inline-flex items-center gap-2 text-xs py-1.5 px-3 rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#cbd5e1] font-mono font-semibold">
+                          {l.value}
+                        </span>
                       )}
                     </div>
                   </motion.div>
@@ -120,12 +131,12 @@ export default function ContactSection() {
               custom={6} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
               className="mt-12 lg:mt-16"
             >
-              <a
-                href="mailto:tejaswinisomisetty22@gmail.com"
-                className="btn-primary inline-flex text-xs py-3.5 px-7 uppercase font-bold tracking-wider"
+              <button
+                onClick={handleSendMessage}
+                className="btn-primary inline-flex text-xs py-3.5 px-7 uppercase font-bold tracking-wider relative cursor-pointer"
               >
-                Send a Message
-              </a>
+                {copied ? 'Email Copied!' : 'Send a Message'}
+              </button>
             </motion.div>
           </div>
 
