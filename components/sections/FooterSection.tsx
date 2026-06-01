@@ -35,7 +35,7 @@ export default function FooterSection() {
             <a href="mailto:tejaswinisomisetty22@gmail.com" className="text-[#475569] text-xs hover:text-[#2dd4bf] transition-colors">
               Email
             </a>
-            <a href="https://www.linkedin.com/in/tejaswini-somisetty" target="_blank" rel="noopener noreferrer" className="text-[#475569] text-xs hover:text-[#2dd4bf] transition-colors">
+            <a href="https://www.linkedin.com/in/tejaswini-somisetty-1a7776340?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer" className="text-[#475569] text-xs hover:text-[#2dd4bf] transition-colors">
               LinkedIn
             </a>
           </motion.div>

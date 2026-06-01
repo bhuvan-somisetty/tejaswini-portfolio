@@ -21,7 +21,7 @@ const links = [
   {
     label: 'LinkedIn',
     value: 'linkedin.com/in/tejaswini-somisetty',
-    href: 'https://www.linkedin.com/in/tejaswini-somisetty',
+    href: 'https://www.linkedin.com/in/tejaswini-somisetty-1a7776340?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
     icon: '⌁',
   },
   {
