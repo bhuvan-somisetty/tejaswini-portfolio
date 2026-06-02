@@ -13,8 +13,13 @@ const navLinks = [
   { href: '#contact',         label: 'Contact' },
 ];
 
+const NAV_OFFSET = 72; // height of the fixed navbar (h-16 = 64px) + small breathing room
+
 function scrollTo(id: string) {
-  document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+  const el = document.querySelector(id) as HTMLElement | null;
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+  window.scrollTo({ top, behavior: 'smooth' });
 }
 
 export default function Navbar() {
@@ -119,7 +124,14 @@ export default function Navbar() {
               {navLinks.map(link => (
                 <button
                   key={link.href}
-                  onClick={() => { scrollTo(link.href); setOpen(false); }}
+                  onClick={() => {
+                    // Close the menu first, then scroll on the next frames so the
+                    // menu-collapse re-render can't interrupt the smooth scroll (mobile).
+                    setOpen(false);
+                    requestAnimationFrame(() =>
+                      requestAnimationFrame(() => scrollTo(link.href))
+                    );
+                  }}
                   className="text-[#94a3b8] text-sm text-left hover:text-white transition-colors"
                 >
                   {link.label}
