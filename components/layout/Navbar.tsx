@@ -15,11 +15,35 @@ const navLinks = [
 
 const NAV_OFFSET = 72; // height of the fixed navbar (h-16 = 64px) + small breathing room
 
+// Custom rAF-driven smooth scroll. We deliberately do NOT use native
+// `scrollIntoView`/`scrollTo({behavior:'smooth'})` because that path is
+// unreliable on mobile browsers — a React re-render (e.g. the mobile menu
+// collapsing) interrupts and cancels it, leaving you mid-page. This manual
+// animation writes the scroll position every frame and always reaches the target.
+function smoothScrollTo(targetY: number, duration = 650) {
+  const startY = window.scrollY;
+  const distance = targetY - startY;
+  if (Math.abs(distance) < 2) return;
+  let startTime: number | null = null;
+
+  const step = (now: number) => {
+    if (startTime === null) startTime = now;
+    const elapsed = now - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    // easeInOutCubic
+    const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    window.scrollTo(0, startY + distance * eased);
+    if (elapsed < duration) requestAnimationFrame(step);
+  };
+
+  requestAnimationFrame(step);
+}
+
 function scrollTo(id: string) {
   const el = document.querySelector(id) as HTMLElement | null;
   if (!el) return;
   const top = el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
-  window.scrollTo({ top, behavior: 'smooth' });
+  smoothScrollTo(Math.max(top, 0));
 }
 
 export default function Navbar() {
@@ -50,7 +74,7 @@ export default function Navbar() {
         <div className="container mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
           {/* Wordmark */}
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => smoothScrollTo(0)}
             className="text-white font-semibold text-sm tracking-tight hover:text-[#2dd4bf] transition-colors"
           >
             Tejaswini<span className="text-[#2dd4bf]">.</span>
@@ -124,14 +148,7 @@ export default function Navbar() {
               {navLinks.map(link => (
                 <button
                   key={link.href}
-                  onClick={() => {
-                    // Close the menu first, then scroll on the next frames so the
-                    // menu-collapse re-render can't interrupt the smooth scroll (mobile).
-                    setOpen(false);
-                    requestAnimationFrame(() =>
-                      requestAnimationFrame(() => scrollTo(link.href))
-                    );
-                  }}
+                  onClick={() => { setOpen(false); scrollTo(link.href); }}
                   className="text-[#94a3b8] text-sm text-left hover:text-white transition-colors"
                 >
                   {link.label}

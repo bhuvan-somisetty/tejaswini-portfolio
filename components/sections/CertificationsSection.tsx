@@ -13,6 +13,14 @@ const fadeUp = {
 
 const certifications = [
   {
+    title: 'Basic Life Support (BLS)',
+    issuer: 'Hands-on Resuscitation Training',
+    status: 'Trained',
+    icon: '❤️',
+    color: '#f43f5e',
+    desc: 'High-quality CPR for adults, children and infants, early AED use, rescue breaths with a barrier device, choking relief, the Chain of Survival and team-based resuscitation.',
+  },
+  {
     title: 'Ethics Review of Health Research',
     issuer: 'Healthcare Research Authority',
     status: 'Professional',
@@ -149,10 +157,10 @@ export default function CertificationsSection() {
             </div>
           </motion.div>
 
-          {/* 2. Seminars & Workshops */}
+          {/* 2. Seminars & Workshops (full width so the 2-column grid stays even) */}
           <motion.div
             custom={7} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="relative card p-8 border border-[#2dd4bf]/15 bg-[#0f0f1a]/20 shadow-[0_4px_25px_rgba(0,0,0,0.15)] flex flex-col justify-between"
+            className="relative card sm:col-span-2 p-8 border border-[#2dd4bf]/15 bg-[#0f0f1a]/20 shadow-[0_4px_25px_rgba(0,0,0,0.15)] flex flex-col justify-between"
           >
             <span className="text-[8px] font-mono text-[#475569]/70 absolute top-3 right-3 font-bold tracking-widest select-none">[SEM.WKS // 07.CLN]</span>
             <div>

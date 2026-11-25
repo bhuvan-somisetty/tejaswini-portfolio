@@ -14,6 +14,8 @@ const experiences = [
       'Collaborating on healthcare quality initiatives and patient safety protocols',
       'Supporting clinical audits and quality improvement projects',
       'Participating in multidisciplinary rounds and medication review committees',
+      'Reviewing documentation and monitoring compliance with hospital quality standards',
+      'Tracking quality indicators and supporting process improvement activities',
     ],
   },
   {
@@ -50,6 +52,7 @@ const experiences = [
       'Conducted medication reconciliation and patient counselling sessions',
       'Assessed prescription rationality and reported ADRs via PvPI system',
       'Participated in WHO AWaRe antibiotic classification data collection',
+      'Joined ward rounds and case discussions; maintained clinical documentation and patient monitoring notes',
     ],
   },
   {

@@ -44,7 +44,7 @@ const clinicalPathway = [
   },
   {
     stage: '03',
-    name: 'HICU (High Dependency ICU)',
+    name: 'HICU (High-Intensity Care Unit)',
     desc: 'Management of step-down critical care patients and safety-sensitive titration.',
   },
   {
@@ -108,6 +108,9 @@ export default function AboutSection() {
                 </p>
                 <p className="text-[#cbd5e1] text-xs md:text-sm leading-[1.8]">
                   My work concentrates on the intersection of clinical pharmacy and evidence-based practice. I collaborate directly with hospital medical teams on clinical rounds to reconcile medication regimens, report adverse drug events, and audit antibiotic compliance.
+                </p>
+                <p className="text-[#cbd5e1] text-xs md:text-sm leading-[1.8]">
+                  My goal is to contribute to safer and more effective healthcare systems through clinical pharmacy practice, healthcare quality improvement, patient safety initiatives, and evidence-based research, while continuing to grow my professional expertise and leadership skills.
                 </p>
               </div>
             </motion.div>

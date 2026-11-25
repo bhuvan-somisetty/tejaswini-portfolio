@@ -23,6 +23,16 @@ export const metadata: Metadata = {
     "Pharmacovigilance",
     "Antibiotic Stewardship",
     "Karnataka College of Pharmacy",
+    "Pharm.D Candidate",
+    "Medication Safety",
+    "Drug Information Services",
+    "Evidence-Based Medicine",
+    "Quality Improvement",
+    "Clinical Audit",
+    "Healthcare Innovation",
+    "Research Enthusiast",
+    "Future Clinical Pharmacist",
+    "WHO AWaRe",
   ],
   authors: [{ name: "Tejaswini Somisetty" }],
   creator: "Tejaswini Somisetty",
@@ -58,7 +68,7 @@ export default function RootLayout({
           backgroundColor: "#09090f",
           color: "#f1f5f9",
           fontFamily: "var(--font-inter), system-ui, sans-serif",
-          overflowX: "hidden",
+          overflowX: "clip",
         }}
       >
         {children}

@@ -30,7 +30,10 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* NOTE: do not set `scroll-behavior: smooth` here. It routes every
+     programmatic scroll through the browser's native smooth engine, which is
+     unreliable on mobile (gets cancelled by re-renders). The navbar animates
+     scrolling itself via requestAnimationFrame instead. */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,7 +42,9 @@ body {
   background: var(--bg);
   color: var(--text-1);
   font-family: 'Inter', 'Space Grotesk', system-ui, sans-serif;
-  overflow-x: hidden;
+  /* `clip` prevents horizontal scroll without turning <body> into a scroll
+     container (which `hidden` does, breaking anchor scrolling on mobile). */
+  overflow-x: clip;
   line-height: 1.6;
 }
 
@@ -384,4 +389,9 @@ body {
   pointer-events: none;
   z-index: 0;
   opacity: 0.5;
+}
+
+/* The thesis viewer is view-only: never print it. */
+@media print {
+  .thesis-viewer { display: none !important; }
 }
