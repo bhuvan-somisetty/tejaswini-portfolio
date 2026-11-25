@@ -50,7 +50,6 @@ export default function HeroSection({ ready }: { ready: boolean }) {
   const nameFade = useTransform(scrollYProgress, v => 1 - ramp(0, 0.3)(v));
   const nameScale = useTransform(scrollYProgress, v => 1 - 0.14 * ramp(0, 0.3)(v));
   const nameBlur = useTransform(scrollYProgress, v => `blur(${10 * ramp(0, 0.3)(v)}px)`);
-  const labelFade = useTransform(scrollYProgress, ramp(0.75, 0.95));
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -125,14 +124,6 @@ export default function HeroSection({ ready }: { ready: boolean }) {
           </motion.div>
         </motion.div>
 
-        {/* Caption under the particle word */}
-        <motion.p
-          style={{ opacity: labelFade }}
-          className="absolute inset-x-0 bottom-[22%] z-10 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-mist"
-          aria-hidden
-        >
-          <span className="text-accent">01</span> · Biography &amp; Dossier
-        </motion.p>
       </div>
     </section>
   );

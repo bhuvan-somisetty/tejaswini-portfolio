@@ -402,6 +402,74 @@ export const conference = {
   ],
 };
 
+/** Webinar, workshop and bootcamp certificates, newest first. Images live in public/certificates. */
+export const webinarCertificates: { title: string; issuer: string; date: string; kind: string; image: string; desc: string }[] = [
+  {
+    title: 'Digital Therapeutics (DTx): Economics, HEOR & Reimbursement Pathways',
+    issuer: 'Institute of Health Economics and Policy Research (IHEPR) · CliMed Research Solutions · Dual Sphere Consulting',
+    date: '5 Jul 2026',
+    kind: 'Live workshop',
+    image: '/certificates/digital-therapeutics-heor.webp',
+    desc: 'Two-hour live online workshop on digital health market access, health economics and outcomes research, and reimbursement pathways.',
+  },
+  {
+    title: 'Advanced Hypertension Management',
+    issuer: 'CliMed.Edu · CliMed Research Solutions',
+    date: '2 Jul 2026',
+    kind: 'Webinar',
+    image: '/certificates/advanced-hypertension.webp',
+    desc: 'Navigating complex hypertension cases with clinical excellence.',
+  },
+  {
+    title: 'AI Bootcamp: Python Programming for Pharmaceutical Sciences',
+    issuer: 'CliMed Research Solutions · Geetanjali University · Geetanjali Institute of Pharmacy',
+    date: '1 Jul 2026',
+    kind: 'Bootcamp',
+    image: '/certificates/ai-bootcamp-python.webp',
+    desc: 'Bootcamp demo class and webinar on Python programming for pharmaceutical sciences, under the Skill Development Program.',
+  },
+  {
+    title: 'Pharmacy Practice for Better Health Outcomes',
+    issuer: 'HealthFirst Academy · HealthTech Innovations · PharmaCare Foundation',
+    date: '18 Mar 2026',
+    kind: 'Webinar',
+    image: '/certificates/pharmacy-practice-outcomes.webp',
+    desc: 'Ensuring quality, safety and innovation in pharmacy practice.',
+  },
+  {
+    title: 'Clinical Trials',
+    issuer: 'Community Pharmacist Aid (CPA), Scientific Division',
+    date: '27 Jan 2026',
+    kind: 'Live webinar',
+    image: '/certificates/clinical-trials-cpa.webp',
+    desc: 'Live webinar on the design and conduct of clinical trials.',
+  },
+  {
+    title: 'Pharmacist in ICU & Emergency Care · Gateway to UAE Licensing',
+    issuer: 'CliMed Research Solutions · RxEdu',
+    date: '20 Jan 2026',
+    kind: 'Webinar',
+    image: '/certificates/pharmacist-icu-emergency-uae.webp',
+    desc: 'The pharmacist’s role in ICU and emergency care, and the UAE licensing exams (BHA, HAAD, MOH).',
+  },
+  {
+    title: 'Digital Health & Technology Innovations in Pharmacy Practice',
+    issuer: 'CliMed Research Solutions · RxEdu · MedTech Innovations',
+    date: '18 Jan 2026',
+    kind: 'Webinar',
+    image: '/certificates/digital-health-technology.webp',
+    desc: 'Advancing knowledge at the intersection of healthcare, pharmacy and technology.',
+  },
+  {
+    title: 'Future of Pharmacy: Integrating Healthcare, Technology & Patient-Centered Care',
+    issuer: 'CliMed Research Solutions · RxEdu · HealthTech Innovations',
+    date: '15 Jan 2026',
+    kind: 'Webinar',
+    image: '/certificates/future-of-pharmacy.webp',
+    desc: 'How technology and patient-centred care are reshaping pharmacy practice.',
+  },
+];
+
 export const workshops = [
   'Clinical Pharmacy',
   'Pharmacovigilance',

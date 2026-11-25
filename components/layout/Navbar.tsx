@@ -62,7 +62,7 @@ export default function Navbar({ show }: { show: boolean }) {
         <nav
           aria-label="Main"
           className={`flex w-full max-w-[1180px] items-center justify-between rounded-full py-2 pl-3 pr-2 transition-all duration-700 sm:pl-4 ${
-            scrolled || open ? 'glass' : 'border border-transparent'
+            scrolled || open ? 'border border-ice/10 bg-ink-2 shadow-[0_18px_40px_-18px_rgb(0_0_0/0.8)]' : 'border border-transparent'
           }`}
         >
           <button onClick={() => go('hero')} className="flex items-center gap-2.5" aria-label="Back to top">
