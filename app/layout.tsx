@@ -64,16 +64,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    title: "Tejaswini Somisetty | Clinical Pharmacy Portfolio",
-    description:
-      "Final-Year Pharm.D Candidate specialising in clinical pharmacy, patient safety, and evidence-based medicine.",
+    title: "Tejaswini Somisetty",
+    description: "Portfolio",
     siteName: "Tejaswini Somisetty",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tejaswini Somisetty | Clinical Pharmacy Portfolio",
-    description:
-      "Final-Year Pharm.D Candidate | Clinical Pharmacy | Healthcare Quality | Patient Safety",
+    title: "Tejaswini Somisetty",
+    description: "Portfolio",
   },
   robots: { index: true, follow: true },
 };
