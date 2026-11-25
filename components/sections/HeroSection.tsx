@@ -66,7 +66,7 @@ export default function HeroSection({ ready }: { ready: boolean }) {
       {/* 3D capsule */}
       <motion.div
         style={{ y: sceneY, opacity: sceneFade }}
-        className="pointer-events-none absolute inset-x-0 top-20 h-[340px] [mask-image:linear-gradient(to_bottom,black_80%,transparent)] sm:h-[420px] lg:pointer-events-auto lg:inset-y-0 lg:left-auto lg:right-0 lg:top-0 lg:h-full lg:w-[52%]"
+        className="pointer-events-none absolute inset-x-0 top-20 h-[340px] [mask-image:linear-gradient(to_bottom,black_80%,transparent)] sm:h-[420px] lg:pointer-events-auto lg:left-auto lg:right-0 lg:top-0 lg:h-[100svh] lg:w-[52%]"
         initial={{ opacity: 0, scale: 0.92 }}
         animate={ready ? { opacity: 1, scale: 1 } : undefined}
         transition={{ duration: 1.6, delay: 0.2, ease: EASE }}
