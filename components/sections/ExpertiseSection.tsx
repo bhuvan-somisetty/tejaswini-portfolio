@@ -24,9 +24,9 @@ export default function ExpertiseSection() {
           intro="Eight practice domains, each with the clinical action workflow followed on the wards."
         />
 
-        <div className="grid gap-6 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Domain selector */}
-          <Reveal className="lg:col-span-4">
+          <Reveal className="min-w-0 lg:col-span-4">
             <div role="tablist" aria-label="Clinical specialties" className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
               {domains.map((d, i) => {
                 const Icon = domainIcons[d.icon];
@@ -46,12 +46,12 @@ export default function ExpertiseSection() {
                     {on && (
                       <motion.span
                         layoutId="domain-active"
-                        className="absolute inset-0 rounded-2xl border border-tangerine/30 bg-tangerine/[0.08]"
+                        className="absolute inset-0 rounded-2xl border border-accent/30 bg-accent/[0.08]"
                         transition={{ duration: 0.55, ease: EASE }}
                       />
                     )}
                     <span className="relative font-mono text-[10px] text-fog">0{i + 1}</span>
-                    <Icon className={`relative h-4 w-4 ${on ? 'text-tangerine' : ''}`} strokeWidth={1.7} />
+                    <Icon className={`relative h-4 w-4 ${on ? 'text-accent' : ''}`} strokeWidth={1.7} />
                     <span className="relative whitespace-nowrap text-[14px] font-semibold">{d.title}</span>
                   </button>
                 );
@@ -60,7 +60,7 @@ export default function ExpertiseSection() {
           </Reveal>
 
           {/* Workflow panel */}
-          <Reveal delay={0.1} className="lg:col-span-8">
+          <Reveal delay={0.1} className="min-w-0 lg:col-span-8">
             <TiltCard max={3} className="glass min-h-[460px] overflow-hidden rounded-[32px]">
               <div id="domain-panel" role="tabpanel" aria-labelledby={`tab-${active.id}`} className="relative p-7 md:p-10">
                 <AnimatePresence mode="wait">
@@ -73,10 +73,10 @@ export default function ExpertiseSection() {
                   >
                     <div className="flex items-start justify-between gap-6">
                       <div>
-                        <span className="eyebrow text-tangerine/90">Practice domain</span>
+                        <span className="eyebrow text-accent/90">Practice domain</span>
                         <h3 className="mt-3 font-display text-4xl leading-tight text-ice md:text-5xl">{active.title}</h3>
                       </div>
-                      <span className="grid h-16 w-16 shrink-0 place-items-center rounded-3xl border border-tangerine/30 bg-gradient-to-br from-tangerine/20 to-transparent text-tangerine">
+                      <span className="grid h-16 w-16 shrink-0 place-items-center rounded-3xl border border-accent/30 bg-gradient-to-br from-accent/20 to-transparent text-accent">
                         <ActiveIcon className="h-7 w-7" strokeWidth={1.5} />
                       </span>
                     </div>
@@ -91,10 +91,10 @@ export default function ExpertiseSection() {
                             initial={{ opacity: 0, y: 14 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.12 + i * 0.07, ease: EASE }}
-                            className="rounded-2xl border border-line bg-ice/[0.025] p-5 transition-colors duration-500 hover:border-tangerine/30"
+                            className="rounded-2xl border border-line bg-ice/[0.025] p-5 transition-colors duration-500 hover:border-accent/30"
                           >
                             <div className="flex items-center gap-3">
-                              <span className="grid h-7 w-7 place-items-center rounded-full border border-tangerine/40 font-mono text-[10px] text-tangerine">
+                              <span className="grid h-7 w-7 place-items-center rounded-full border border-accent/40 font-mono text-[10px] text-accent">
                                 0{i + 1}
                               </span>
                               <h4 className="text-[14.5px] font-semibold text-ice">{step.title}</h4>
@@ -115,8 +115,8 @@ export default function ExpertiseSection() {
         <ul className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {milestones.map((m, i) => (
             <Reveal as="li" key={m.term} delay={i * 0.07}>
-              <div className="h-full rounded-3xl border border-line bg-ice/[0.02] p-6 transition-colors duration-500 hover:border-tangerine/30">
-                <div className="font-display text-2xl italic text-tangerine-soft md:text-3xl">{m.term}</div>
+              <div className="h-full rounded-3xl border border-line bg-ice/[0.02] p-6 transition-colors duration-500 hover:border-accent/30">
+                <div className="font-serif text-2xl italic text-accent-soft md:text-3xl">{m.term}</div>
                 <div className="mt-2 text-[13px] font-semibold leading-snug text-ice-2">{m.label}</div>
               </div>
             </Reveal>

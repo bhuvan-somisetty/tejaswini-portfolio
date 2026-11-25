@@ -18,20 +18,20 @@ export default function SectionHeading({
 }) {
   const center = align === 'center';
   return (
-    <div className={`mb-14 md:mb-20 ${center ? 'text-center mx-auto max-w-3xl' : 'max-w-4xl'}`}>
+    <div className={`mb-14 md:mb-20 ${center ? 'text-center mx-auto max-w-4xl' : 'max-w-5xl'}`}>
       <Reveal>
         <div className={`flex items-center gap-3 mb-6 ${center ? 'justify-center' : ''}`}>
-          <span className="font-mono text-[11px] text-tangerine tracking-[0.2em]">{index}</span>
-          <span className="h-px w-10 bg-tangerine/50" />
+          <span className="font-mono text-[11px] text-accent tracking-[0.2em]">{index}</span>
+          <span className="h-px w-10 bg-accent/60" />
           <span className="eyebrow">{label}</span>
         </div>
       </Reveal>
-      <h2 className="font-display text-[44px] leading-[1.02] sm:text-6xl md:text-7xl tracking-[-0.01em] text-ice">
+      <h2 className="font-display text-[44px] leading-[1.02] tracking-[-0.01em] text-ice sm:text-6xl md:text-7xl">
         <MaskText text={title} />
         {accent && (
           <>
             {' '}
-            <MaskText text={accent} className="italic text-gradient" delay={0.15} />
+            <MaskText text={accent} className="italic text-accent-soft" delay={0.15} />
           </>
         )}
       </h2>

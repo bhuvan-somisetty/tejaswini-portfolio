@@ -4,66 +4,132 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { EASE } from '@/components/ui/Motion';
 
-/** Short intro: a capsule fills with the load percentage, then the curtain lifts. */
+type Stage = 'dot' | 'name' | 'word' | 'grain' | 'done';
+
+/** Deterministic scatter so the letters fly in from the same places on every visit. */
+const scatter = (i: number) => ({
+  x: Math.sin(i * 12.9898) * 260,
+  y: Math.cos(i * 78.233) * 180,
+  rotate: Math.sin(i * 4.1) * 70,
+  scale: 1.6 + (i % 3) * 0.4,
+});
+
+function Letters({ text, from }: { text: string; from: 'scatter' | 'flip' }) {
+  return (
+    <span className="display-wide flex text-[clamp(44px,12vw,168px)] leading-none" aria-hidden>
+      {text.split('').map((ch, i) => (
+        <motion.span
+          key={`${text}-${i}`}
+          className="text-chrome inline-block"
+          style={{ transformPerspective: 800 }}
+          initial={
+            from === 'scatter'
+              ? { opacity: 0, filter: 'blur(14px)', ...scatter(i) }
+              : { opacity: 0, rotateX: -90, y: '40%', filter: 'blur(8px)' }
+          }
+          animate={{ opacity: 1, x: 0, y: 0, rotate: 0, rotateX: 0, scale: 1, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, rotateX: 90, y: '-40%', filter: 'blur(8px)', transition: { duration: 0.35, delay: i * 0.025, ease: EASE } }}
+          transition={{ duration: from === 'scatter' ? 1.1 : 0.6, delay: (from === 'scatter' ? 0.05 : 0.03) * i, ease: EASE }}
+        >
+          {ch}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
+/**
+ * Intro: a glowing dot on black, the name assembles from scattered letters,
+ * flips into PORTFOLIO, then film grain thickens and clears onto the hero.
+ */
 export default function Preloader({ onDone }: { onDone: () => void }) {
-  const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [stage, setStage] = useState<Stage>('dot');
 
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const duration = reduce ? 300 : 1700;
     const root = document.documentElement;
     root.style.overflow = 'hidden';
-    let raf = 0;
-    let timer: ReturnType<typeof setTimeout>;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const t = Math.min((now - start) / duration, 1);
-      setProgress(Math.round((1 - Math.pow(1 - t, 3)) * 100));
-      if (t < 1) {
-        raf = requestAnimationFrame(tick);
-      } else {
-        timer = setTimeout(() => {
-          setVisible(false);
-          root.style.overflow = '';
-          onDone();
-        }, reduce ? 0 : 250);
-      }
-    };
-    raf = requestAnimationFrame(tick);
+    const plan: [Stage, number][] = reduce
+      ? [['word', 0], ['done', 700]]
+      : [['name', 800], ['word', 2900], ['grain', 4300], ['done', 4900]];
+    const timers = plan.map(([s, at]) => setTimeout(() => setStage(s), at));
     return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(timer);
+      timers.forEach(clearTimeout);
       root.style.overflow = '';
     };
-  }, [onDone]);
+  }, []);
+
+  useEffect(() => {
+    if (stage !== 'done') return;
+    document.documentElement.style.overflow = '';
+    onDone();
+  }, [stage, onDone]);
+
+  const skip = () => setStage('done');
 
   return (
     <AnimatePresence>
-      {visible && (
+      {stage !== 'done' && (
         <motion.div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-ink"
-          initial={{ clipPath: 'inset(0 0 0% 0)' }}
-          exit={{ clipPath: 'inset(0 0 100% 0)' }}
-          transition={{ duration: 1, ease: EASE }}
+          className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden bg-ink"
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6, ease: EASE }}
           role="status"
-          aria-label="Loading portfolio"
+          aria-label="Loading the portfolio of Tejaswini Somisetty"
         >
-          <div className="flex flex-col items-center gap-8">
-            {/* Capsule loader */}
-            <div className="relative h-[120px] w-[52px] rotate-[24deg] overflow-hidden rounded-full border border-ice/20">
-              <div className="absolute bottom-0 left-0 right-0 bg-tangerine" style={{ height: `${progress}%` }} />
-              <div className="absolute inset-x-0 top-1/2 h-px bg-ice/25" />
-            </div>
-            <div className="text-center">
-              <div className="font-display text-3xl tracking-tight text-ice">
-                Tejaswini <span className="italic text-tangerine-soft">Somisetty</span>
-              </div>
-              <div className="mt-3 font-mono text-[11px] tracking-[0.3em] text-mist tabular-nums">
-                PHARM.D · {String(progress).padStart(3, '0')}%
-              </div>
-            </div>
-          </div>
+          {/* Soft light behind the lettering */}
+          <motion.div
+            className="pointer-events-none absolute h-[60vmin] w-[60vmin] rounded-full bg-[radial-gradient(circle,rgb(255_240_213/0.16),transparent_65%)]"
+            initial={{ scale: 0.2, opacity: 0 }}
+            animate={{ scale: stage === 'dot' ? 0.6 : 1.4, opacity: 1 }}
+            transition={{ duration: 1.6, ease: EASE }}
+          />
+
+          <AnimatePresence mode="wait">
+            {stage === 'dot' && (
+              <motion.span
+                key="dot"
+                className="h-3 w-3 rounded-full bg-ice shadow-[0_0_30px_8px_rgb(255_240_213/0.55)]"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: [0, 1.4, 1], opacity: 1 }}
+                exit={{ scale: 0, opacity: 0, transition: { duration: 0.25 } }}
+                transition={{ duration: 0.7, ease: EASE }}
+              />
+            )}
+            {stage === 'name' && (
+              <motion.div key="name" className="relative">
+                <Letters text="TEJASWINI" from="scatter" />
+              </motion.div>
+            )}
+            {(stage === 'word' || stage === 'grain') && (
+              <motion.div key="word" className="relative flex flex-col items-center">
+                <Letters text="PORTFOLIO" from="flip" />
+                <motion.span
+                  className="mt-3 font-serif text-[clamp(18px,2.4vw,30px)] italic text-accent-soft"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.45, ease: EASE }}
+                >
+                  Doctor of Pharmacy
+                </motion.span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Grain burst that dissolves the intro into the page */}
+          <motion.div
+            className="grain-burst pointer-events-none absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: stage === 'grain' ? 0.9 : 0 }}
+            transition={{ duration: 0.5, ease: 'easeIn' }}
+          />
+
+          <button
+            onClick={skip}
+            className="absolute bottom-8 right-8 font-mono text-[10px] uppercase tracking-[0.25em] text-mist transition-colors hover:text-ice"
+          >
+            Skip intro
+          </button>
         </motion.div>
       )}
     </AnimatePresence>

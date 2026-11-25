@@ -6,9 +6,9 @@ import { Environment, Float, Lightformer, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import SceneCanvas from './SceneCanvas';
 
-const TANGERINE = '#ff693d';
-const ICE = '#e9f0f5';
-const COBALT = '#2f6fd1';
+const TANGERINE = '#ff493d';
+const ICE = '#fff0d5';
+const COBALT = '#a68d82';
 
 const RADIUS = 0.62;
 const BODY = 1.05;

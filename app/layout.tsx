@@ -1,6 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Manrope, JetBrains_Mono } from "next/font/google";
+import { Archivo, Instrument_Serif, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+
+const archivo = Archivo({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  style: ["normal", "italic"],
+  variable: "--font-archivo",
+  display: "swap",
+});
 
 const instrument = Instrument_Serif({
   subsets: ["latin"],
@@ -73,7 +81,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#050b14",
+  themeColor: "#1a060c",
 };
 
 const personJsonLd = {
@@ -105,7 +113,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${instrument.variable} ${manrope.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${archivo.variable} ${instrument.variable} ${manrope.variable} ${jetbrains.variable}`}>
       <body>
         <script
           type="application/ld+json"

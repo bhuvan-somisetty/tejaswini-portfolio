@@ -23,7 +23,7 @@ interface ThesisViewerProps {
 }
 
 const iconBtn =
-  'grid h-9 w-9 place-items-center rounded-full border border-ice/10 text-ice-2 transition-colors hover:border-tangerine/50 hover:text-ice disabled:pointer-events-none disabled:opacity-30';
+  'grid h-9 w-9 place-items-center rounded-full border border-ice/10 text-ice-2 transition-colors hover:border-accent/50 hover:text-ice disabled:pointer-events-none disabled:opacity-30';
 
 export default function ThesisViewer({ open, onClose, title }: ThesisViewerProps) {
   const [page, setPage] = useState(1);
@@ -95,7 +95,7 @@ export default function ThesisViewer({ open, onClose, title }: ThesisViewerProps
           {/* Toolbar */}
           <div className="flex h-16 shrink-0 items-center justify-between gap-3 border-b border-line bg-ink-2/90 px-4 sm:px-6">
             <div className="min-w-0">
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-tangerine">Pharm.D thesis · view only</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">Pharm.D thesis · view only</div>
               <div className="truncate font-display text-[17px] text-ice">{title}</div>
             </div>
 
@@ -136,7 +136,7 @@ export default function ThesisViewer({ open, onClose, title }: ThesisViewerProps
                 ref={closeRef}
                 onClick={onClose}
                 aria-label="Close thesis"
-                className="ml-1 inline-flex h-9 items-center gap-1.5 rounded-full bg-tangerine px-4 text-[13px] font-semibold text-ink transition-colors hover:bg-tangerine-soft sm:ml-2"
+                className="ml-1 inline-flex h-9 items-center gap-1.5 rounded-full bg-accent px-4 text-[13px] font-semibold text-ink transition-colors hover:bg-accent-soft sm:ml-2"
               >
                 Close <X className="h-4 w-4" />
               </button>

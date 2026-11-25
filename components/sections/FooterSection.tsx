@@ -14,23 +14,23 @@ export default function FooterSection() {
           <div>
             <div className="font-display text-2xl text-ice">
               {profile.firstName}
-              <span className="text-tangerine">.</span>
+              <span className="text-accent">.</span>
             </div>
             <div className="mt-1 text-[13px] text-mist">Pharm.D Candidate · Bengaluru, India</div>
           </div>
           <nav aria-label="Footer" className="flex flex-wrap items-center gap-6 text-[13px]">
-            <a href={`mailto:${profile.email}`} className="text-ice-2 transition-colors hover:text-tangerine">
+            <a href={`mailto:${profile.email}`} className="text-ice-2 transition-colors hover:text-accent">
               Email
             </a>
-            <a href={profile.phoneHref} className="text-ice-2 transition-colors hover:text-tangerine">
+            <a href={profile.phoneHref} className="text-ice-2 transition-colors hover:text-accent">
               Phone
             </a>
-            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-ice-2 transition-colors hover:text-tangerine">
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-ice-2 transition-colors hover:text-accent">
               LinkedIn
             </a>
             <button
               onClick={() => scrollTo('hero')}
-              className="inline-flex items-center gap-1.5 rounded-full border border-ice/12 px-4 py-2 text-ice-2 transition-colors hover:border-tangerine/50 hover:text-ice"
+              className="inline-flex items-center gap-1.5 rounded-full border border-ice/12 px-4 py-2 text-ice-2 transition-colors hover:border-accent/50 hover:text-ice"
             >
               Back to top <ArrowUp className="h-3.5 w-3.5" />
             </button>
@@ -41,7 +41,7 @@ export default function FooterSection() {
       <Reveal y={60}>
         <div
           aria-hidden
-          className="mt-12 select-none whitespace-nowrap text-center font-display leading-[0.8] text-transparent [-webkit-text-stroke:1px_rgb(233_240_245/0.14)] text-[clamp(80px,19vw,300px)]"
+          className="mt-12 select-none whitespace-nowrap text-center font-display leading-[0.8] text-transparent [-webkit-text-stroke:1px_rgb(255_240_213/0.16)] text-[clamp(80px,19vw,300px)]"
         >
           Tejaswini <span className="italic">S.</span>
         </div>

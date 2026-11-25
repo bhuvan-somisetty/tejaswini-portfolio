@@ -38,12 +38,15 @@ export function Reveal({
 export function MaskText({
   text,
   className,
+  wordClassName,
   delay = 0,
   stagger = 0.06,
   play,
 }: {
   text: string;
   className?: string;
+  /** Classes for each word; use for background-clip effects, which do not reach transformed children. */
+  wordClassName?: string;
   delay?: number;
   stagger?: number;
   /** When set, animates on this flag instead of on scroll. */
@@ -59,7 +62,7 @@ export function MaskText({
       {words.map((w, i) => (
         <span key={`${w}-${i}`} aria-hidden className="inline-block overflow-hidden pb-[0.24em] -mb-[0.24em] pr-[0.06em] -mr-[0.06em] align-bottom">
           <motion.span
-            className="inline-block"
+            className={`inline-block ${wordClassName ?? ''}`}
             initial={reduce ? { opacity: 0 } : { y: '110%' }}
             animate={show ? (reduce ? { opacity: 1 } : { y: '0%' }) : undefined}
             transition={{ duration: 1.1, delay: delay + i * stagger, ease: EASE }}

@@ -66,12 +66,12 @@ export default function Navbar({ show }: { show: boolean }) {
           }`}
         >
           <button onClick={() => go('hero')} className="flex items-center gap-2.5" aria-label="Back to top">
-            <span className="grid h-9 w-9 place-items-center rounded-full border border-tangerine/50 font-display text-[15px] text-tangerine">
+            <span className="grid h-9 w-9 place-items-center rounded-full border border-accent/50 font-display text-[15px] text-accent">
               TS
             </span>
             <span className="hidden font-display text-lg tracking-tight text-ice sm:block">
               {profile.firstName}
-              <span className="text-tangerine">.</span>
+              <span className="text-accent">.</span>
             </span>
           </button>
 
@@ -101,7 +101,7 @@ export default function Navbar({ show }: { show: boolean }) {
           <div className="flex items-center gap-2">
             <a
               href={`mailto:${profile.email}`}
-              className="group hidden items-center gap-1.5 rounded-full bg-tangerine px-4 py-2.5 text-[13px] font-semibold text-ink transition-colors hover:bg-tangerine-soft sm:inline-flex"
+              className="group hidden items-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-[13px] font-semibold text-ink transition-colors hover:bg-accent-soft sm:inline-flex"
             >
               Get in touch
               <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -152,7 +152,7 @@ export default function Navbar({ show }: { show: boolean }) {
                     onClick={() => go(link.id)}
                     className="flex w-full items-baseline gap-4 py-1.5 text-left font-display text-[38px] leading-tight text-ice"
                   >
-                    <span className="font-mono text-[11px] text-tangerine">0{i + 1}</span>
+                    <span className="font-mono text-[11px] text-accent">0{i + 1}</span>
                     {link.label}
                   </button>
                 </motion.li>
@@ -160,7 +160,7 @@ export default function Navbar({ show }: { show: boolean }) {
             </ul>
             <a
               href={`mailto:${profile.email}`}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-tangerine py-4 text-sm font-semibold text-ink"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-accent py-4 text-sm font-semibold text-ink"
             >
               Get in touch <ArrowUpRight className="h-4 w-4" />
             </a>

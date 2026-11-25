@@ -49,14 +49,14 @@ function AwareDonut() {
             />
           ))}
         </g>
-        <line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke="#e9f0f5" strokeWidth="2" strokeDasharray="3 3" />
+        <line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke="#fff0d5" strokeWidth="2" strokeDasharray="3 3" />
       </svg>
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
         <div className="font-display text-5xl text-ice">
           <CountUp value={6.74} decimals={2} suffix="%" />
         </div>
         <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-mist">Access use</div>
-        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-tangerine">Target ≥ {thesis.target}%</div>
+        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">Target ≥ {thesis.target}%</div>
       </div>
     </figure>
   );
@@ -71,17 +71,17 @@ function Methodology() {
     <div className="mt-20">
       <Reveal>
         <div className="mb-8 flex items-center gap-3">
-          <span className="h-px w-10 bg-tangerine/50" />
+          <span className="h-px w-10 bg-accent/50" />
           <h3 className="eyebrow">Research methodology</h3>
         </div>
       </Reveal>
       <ol ref={ref} className="relative grid gap-8 md:grid-cols-5 md:gap-5">
         <div className="absolute left-[15px] top-2 hidden h-px w-[calc(100%-30px)] bg-line md:block" aria-hidden>
-          <motion.div style={{ scaleX: grow }} className="h-full origin-left bg-tangerine" />
+          <motion.div style={{ scaleX: grow }} className="h-full origin-left bg-accent" />
         </div>
         {thesis.methodology.map((m, i) => (
           <Reveal as="li" key={m.name} delay={i * 0.08} className="relative flex gap-4 md:block">
-            <span className="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-tangerine/50 bg-ink font-mono text-[10px] text-tangerine md:mb-5 md:-mt-2">
+            <span className="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-accent/50 bg-ink font-mono text-[10px] text-accent md:mb-5 md:-mt-2">
               0{i + 1}
             </span>
             <div>
@@ -106,7 +106,7 @@ export default function ResearchSection() {
         {/* Thesis spotlight */}
         <Reveal>
           <TiltCard max={2.5} className="glass overflow-hidden rounded-[36px]">
-            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-tangerine/15 blur-3xl" aria-hidden />
+            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/15 blur-3xl" aria-hidden />
             <div className="relative p-7 md:p-12">
               <div className="flex flex-wrap items-center gap-2.5">
                 {thesis.tags.map(t => (
@@ -124,7 +124,7 @@ export default function ResearchSection() {
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <button
                   onClick={() => setOpen(true)}
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-tangerine px-7 py-4 text-sm font-semibold text-ink transition-colors hover:bg-tangerine-soft"
+                  className="group inline-flex items-center gap-2.5 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-ink transition-colors hover:bg-accent-soft"
                 >
                   <BookOpen className="h-4 w-4" />
                   View full thesis
@@ -135,11 +135,11 @@ export default function ResearchSection() {
               </div>
 
               {/* Key findings */}
-              <div className="mt-12 grid items-center gap-10 border-t border-line pt-10 lg:grid-cols-12">
-                <div className="lg:col-span-4">
+              <div className="mt-12 grid grid-cols-1 items-center gap-10 border-t border-line pt-10 lg:grid-cols-12">
+                <div className="min-w-0 lg:col-span-4">
                   <AwareDonut />
                 </div>
-                <div className="lg:col-span-8">
+                <div className="min-w-0 lg:col-span-8">
                   <span className="eyebrow">Key findings</span>
                   <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
                     {thesis.aware.map(a => (
@@ -173,7 +173,7 @@ export default function ResearchSection() {
         <div className="mt-20">
           <Reveal>
             <div className="mb-8 flex items-center gap-3">
-              <span className="h-px w-10 bg-tangerine/50" />
+              <span className="h-px w-10 bg-accent/50" />
               <h3 className="eyebrow">WHO AWaRe classification framework</h3>
             </div>
           </Reveal>
