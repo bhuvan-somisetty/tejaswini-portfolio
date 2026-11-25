@@ -33,7 +33,7 @@ export default function ExperienceSection() {
               <li key={exp.role} className="relative lg:sticky" style={{ top: `${110 + i * 18}px` }}>
                 <span className="absolute -left-[49px] top-12 hidden h-3 w-3 rounded-full border-2 border-ink bg-tangerine lg:block" aria-hidden />
                 <Reveal>
-                  <article className="glass relative overflow-hidden rounded-[28px] bg-ink-2/95 p-7 md:p-10">
+                  <article className="relative overflow-hidden rounded-[28px] border border-line bg-ink-2 p-7 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.7)] md:p-10">
                     <div className="pointer-events-none absolute -right-6 -top-10 select-none font-display text-[140px] leading-none text-ice/[0.035] md:text-[180px]" aria-hidden>
                       {exp.code}
                     </div>

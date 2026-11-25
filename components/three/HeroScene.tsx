@@ -50,7 +50,7 @@ function Granules({ count }: { count: number }) {
       const a = rand() * Math.PI * 2;
       items.push({
         p: new THREE.Vector3(Math.cos(a) * r, -0.15 - rand() * (BODY + 0.25), Math.sin(a) * r),
-        s: 0.05 + rand() * 0.05,
+        s: 0.035 + rand() * 0.035,
         speed: 0.3 + rand() * 0.6,
       });
     }
@@ -95,7 +95,7 @@ function Capsule({ small }: { small: boolean }) {
   });
 
   return (
-    <group ref={group} scale={small ? 0.85 : 1}>
+    <group ref={group} scale={small ? 0.72 : 0.78}>
       <CapsuleHalf>
         <meshPhysicalMaterial color={TANGERINE} roughness={0.18} metalness={0.05} clearcoat={1} clearcoatRoughness={0.08} side={THREE.DoubleSide} />
       </CapsuleHalf>
@@ -122,7 +122,7 @@ function Capsule({ small }: { small: boolean }) {
         <torusGeometry args={[RADIUS + 0.004, 0.018, 16, 96]} />
         <meshStandardMaterial color={ICE} metalness={0.6} roughness={0.25} />
       </mesh>
-      <Granules count={small ? 28 : 46} />
+      <Granules count={small ? 24 : 34} />
     </group>
   );
 }
@@ -209,9 +209,9 @@ export default function HeroScene({ small = false }: { small?: boolean }) {
     <SceneCanvas className="h-full w-full" camera={{ position: [0, 0, 7.2], fov: 34 }}>
       <Lights />
       <Capsule small={small} />
-      <Molecule position={[-2.1, 1.25, -0.6]} scale={0.8} speed={0.9} />
-      <Molecule position={[2.0, -1.35, -0.4]} scale={0.65} speed={1.2} />
-      {!small && <Molecule position={[1.9, 1.65, -1.4]} scale={0.45} speed={0.7} />}
+      <Molecule position={[-1.55, 1.3, -0.6]} scale={0.6} speed={0.9} />
+      <Molecule position={[1.5, -1.4, -0.4]} scale={0.5} speed={1.2} />
+      {!small && <Molecule position={[1.45, 1.55, -1.4]} scale={0.38} speed={0.7} />}
       <Sparkles count={small ? 40 : 80} scale={[7, 5, 3]} size={2.2} speed={0.25} opacity={0.55} color={ICE} />
     </SceneCanvas>
   );

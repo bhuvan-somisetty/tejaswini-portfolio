@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { clinicalFocus, heroBio, heroRoles, heroStats, profile } from '@/lib/content';
 import { useSmoothScroll } from '@/components/providers/SmoothScroll';
 import { CountUp, EASE, MaskText } from '@/components/ui/Motion';
@@ -42,9 +42,10 @@ export default function HeroSection({ ready }: { ready: boolean }) {
   const ref = useRef<HTMLElement>(null);
   const [small, setSmall] = useState(false);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '8%']);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const sceneY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const sceneY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+  const sceneFade = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 1023px)');
@@ -64,8 +65,8 @@ export default function HeroSection({ ready }: { ready: boolean }) {
     <section id="hero" ref={ref} className="relative flex min-h-[100svh] items-center overflow-hidden pb-24 pt-28 lg:pt-24">
       {/* 3D capsule */}
       <motion.div
-        style={{ y: sceneY }}
-        className="pointer-events-none absolute inset-x-0 top-20 h-[340px] sm:h-[420px] lg:pointer-events-auto lg:inset-y-0 lg:left-auto lg:right-0 lg:top-0 lg:h-full lg:w-[52%]"
+        style={{ y: sceneY, opacity: sceneFade }}
+        className="pointer-events-none absolute inset-x-0 top-20 h-[340px] [mask-image:linear-gradient(to_bottom,black_80%,transparent)] sm:h-[420px] lg:pointer-events-auto lg:inset-y-0 lg:left-auto lg:right-0 lg:top-0 lg:h-full lg:w-[52%]"
         initial={{ opacity: 0, scale: 0.92 }}
         animate={ready ? { opacity: 1, scale: 1 } : undefined}
         transition={{ duration: 1.6, delay: 0.2, ease: EASE }}
@@ -145,18 +146,6 @@ export default function HeroSection({ ready }: { ready: boolean }) {
         <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-mist">{profile.college}</div>
       </motion.div>
 
-      {/* Wrapper keeps the centring transform separate from framer's own transform. */}
-      <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 md:block">
-        <motion.button
-          {...rise(1.3)}
-          onClick={() => scrollTo('about')}
-          className="flex flex-col items-center gap-2 text-mist transition-colors hover:text-ice"
-          aria-label="Scroll to About"
-        >
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-          <ArrowDown className="h-4 w-4" />
-        </motion.button>
-      </div>
     </section>
   );
 }

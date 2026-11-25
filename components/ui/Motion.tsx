@@ -57,7 +57,7 @@ export function MaskText({
   return (
     <span ref={ref} className={className} aria-label={text}>
       {words.map((w, i) => (
-        <span key={`${w}-${i}`} aria-hidden className="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em] align-bottom">
+        <span key={`${w}-${i}`} aria-hidden className="inline-block overflow-hidden pb-[0.24em] -mb-[0.24em] pr-[0.06em] -mr-[0.06em] align-bottom">
           <motion.span
             className="inline-block"
             initial={reduce ? { opacity: 0 } : { y: '110%' }}
