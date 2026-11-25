@@ -178,7 +178,10 @@ export default function CertificationsSection() {
     const down = (e: KeyboardEvent) => {
       if (e.code !== 'Space' || !inView.current || open) return;
       const t = e.target as HTMLElement | null;
-      if (t && t !== triggerRef.current && t.closest('input, textarea, select, button, a, [contenteditable="true"]')) return;
+      // Leave typing fields alone, and let cards and Reload inside the stage use Space as usual.
+      // Focus left on a navbar link (after jumping here) should not block the launcher.
+      if (t?.closest('input, textarea, select, [contenteditable="true"]')) return;
+      if (t && t !== triggerRef.current && stageRef.current?.contains(t) && t.closest('button, a')) return;
       e.preventDefault();
       if (!e.repeat) press();
     };
@@ -192,7 +195,7 @@ export default function CertificationsSection() {
       window.removeEventListener('keyup', up);
       release();
     };
-  }, [press, release, open]);
+  }, [press, release, open, stageRef]);
 
   const layout = useMemo(() => {
     const wide = W >= 900;
