@@ -1,52 +1,55 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.55, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] },
-  }),
-};
+import { ArrowUp } from 'lucide-react';
+import { profile } from '@/lib/content';
+import { useSmoothScroll } from '@/components/providers/SmoothScroll';
+import { Reveal } from '@/components/ui/Motion';
 
 export default function FooterSection() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-40px' });
-
+  const { scrollTo } = useSmoothScroll();
   return (
-    <footer className="border-t border-[rgba(255,255,255,0.06)] py-12" ref={ref}>
-      <div className="container">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-          <motion.div
-            custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-          >
-            <div className="text-white font-semibold text-sm mb-1">
-              Tejaswini<span className="text-[#2dd4bf]">.</span>
+    <footer className="relative overflow-hidden border-t border-line pt-16">
+      <div className="shell">
+        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div className="font-display text-2xl text-ice">
+              {profile.firstName}
+              <span className="text-tangerine">.</span>
             </div>
-            <div className="text-[#334155] text-xs">Pharm.D Candidate · Bengaluru, India</div>
-          </motion.div>
-
-          <motion.div
-            custom={1} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="flex items-center gap-6"
-          >
-            <a href="mailto:tejaswinisomisetty22@gmail.com" className="text-[#475569] text-xs hover:text-[#2dd4bf] transition-colors">
+            <div className="mt-1 text-[13px] text-mist">Pharm.D Candidate · Bengaluru, India</div>
+          </div>
+          <nav aria-label="Footer" className="flex flex-wrap items-center gap-6 text-[13px]">
+            <a href={`mailto:${profile.email}`} className="text-ice-2 transition-colors hover:text-tangerine">
               Email
             </a>
-            <a href="https://www.linkedin.com/in/tejaswini-somisetty-1a7776340?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer" className="text-[#475569] text-xs hover:text-[#2dd4bf] transition-colors">
+            <a href={profile.phoneHref} className="text-ice-2 transition-colors hover:text-tangerine">
+              Phone
+            </a>
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-ice-2 transition-colors hover:text-tangerine">
               LinkedIn
             </a>
-          </motion.div>
-
-          <motion.div
-            custom={2} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="text-[#1e293b] text-xs"
-          >
-            © {new Date().getFullYear()} Tejaswini Somisetty
-          </motion.div>
+            <button
+              onClick={() => scrollTo('hero')}
+              className="inline-flex items-center gap-1.5 rounded-full border border-ice/12 px-4 py-2 text-ice-2 transition-colors hover:border-tangerine/50 hover:text-ice"
+            >
+              Back to top <ArrowUp className="h-3.5 w-3.5" />
+            </button>
+          </nav>
         </div>
+      </div>
+
+      <Reveal y={60}>
+        <div
+          aria-hidden
+          className="mt-12 select-none whitespace-nowrap text-center font-display leading-[0.8] text-transparent [-webkit-text-stroke:1px_rgb(233_240_245/0.14)] text-[clamp(80px,19vw,300px)]"
+        >
+          Tejaswini <span className="italic">S.</span>
+        </div>
+      </Reveal>
+
+      <div className="shell flex flex-col items-center justify-between gap-2 border-t border-line py-6 text-[12px] text-fog sm:flex-row">
+        <span>© {new Date().getFullYear()} Tejaswini Somisetty</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em]">Clinical Pharmacy · Patient Safety · Research</span>
       </div>
     </footer>
   );

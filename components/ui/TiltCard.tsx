@@ -1,90 +1,53 @@
 'use client';
 
-import { useRef, useCallback } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'framer-motion';
 
-interface Props {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-  intensity?: number; // 1–20, default 10
-  glowColor?: string;
-}
-
-/**
- * Premium 3D tilt card with cursor-reactive lighting.
- * Wraps any content with physics-based tilt + mouse-position glow.
- */
+/** Card that tilts in 3D toward the pointer, with a soft light sheen that follows it. */
 export default function TiltCard({
   children,
   className = '',
-  style = {},
-  intensity = 10,
-  glowColor = '#00F5D4',
-}: Props) {
+  max = 8,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  max?: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-  const glowX = useMotionValue(50);
-  const glowY = useMotionValue(50);
-
-  const springConfig = { stiffness: 200, damping: 25 };
-  const springRotateX = useSpring(rotateX, springConfig);
-  const springRotateY = useSpring(rotateY, springConfig);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = (e.clientX - cx) / (rect.width / 2);
-    const dy = (e.clientY - cy) / (rect.height / 2);
-
-    rotateX.set(-dy * intensity);
-    rotateY.set(dx * intensity);
-
-    // Glow follows cursor within card
-    glowX.set(((e.clientX - rect.left) / rect.width) * 100);
-    glowY.set(((e.clientY - rect.top) / rect.height) * 100);
-  }, [intensity, rotateX, rotateY, glowX, glowY]);
-
-  const handleMouseLeave = useCallback(() => {
-    rotateX.set(0);
-    rotateY.set(0);
-    glowX.set(50);
-    glowY.set(50);
-  }, [rotateX, rotateY, glowX, glowY]);
-
-  const glowBackground = useTransform(
-    [glowX, glowY],
-    ([x, y]) =>
-      `radial-gradient(circle at ${x}% ${y}%, ${glowColor}18 0%, transparent 65%)`
+  const reduce = useReducedMotion();
+  const px = useMotionValue(0.5);
+  const py = useMotionValue(0.5);
+  const rx = useSpring(useTransform(py, [0, 1], [max, -max]), { stiffness: 120, damping: 20 });
+  const ry = useSpring(useTransform(px, [0, 1], [-max, max]), { stiffness: 120, damping: 20 });
+  const sheen = useTransform(
+    [px, py],
+    ([x, y]: number[]) =>
+      `radial-gradient(420px circle at ${x * 100}% ${y * 100}%, rgb(255 105 61 / 0.10), transparent 45%)`
   );
 
+  const onMove = (e: React.PointerEvent) => {
+    if (reduce || e.pointerType !== 'mouse' || !ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width);
+    py.set((e.clientY - r.top) / r.height);
+  };
+  const onLeave = () => {
+    px.set(0.5);
+    py.set(0.5);
+  };
+
   return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX: springRotateX,
-        rotateY: springRotateY,
-        transformStyle: 'preserve-3d',
-        perspective: 1000,
-        ...style,
-      }}
-      className={`relative ${className}`}
-      whileHover={{ scale: 1.02 }}
-      transition={{ scale: { type: 'spring', stiffness: 300, damping: 30 } }}
-    >
-      {/* Cursor-reactive glow overlay */}
+    <div style={{ perspective: 1100 }} className="h-full">
       <motion.div
-        className="absolute inset-0 rounded-[inherit] pointer-events-none z-10"
-        style={{ background: glowBackground }}
-      />
-      {children}
-    </motion.div>
+        ref={ref}
+        onPointerMove={onMove}
+        onPointerLeave={onLeave}
+        style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d' }}
+        className={`relative h-full ${className}`}
+      >
+        <motion.div aria-hidden className="pointer-events-none absolute inset-0 rounded-[inherit]" style={{ background: sheen }} />
+        {children}
+      </motion.div>
+    </div>
   );
 }

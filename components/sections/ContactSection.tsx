@@ -1,186 +1,106 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] },
-  }),
-};
+import { useState } from 'react';
+import { ArrowUpRight, Check, Mail, MapPin, Phone } from 'lucide-react';
+import { availability, contactIntro, profile } from '@/lib/content';
+import SectionHeading from '@/components/ui/SectionHeading';
+import { Reveal } from '@/components/ui/Motion';
+import { LinkedInIcon } from '@/components/ui/Icons';
 
 const links = [
-  {
-    label: 'Email',
-    value: 'tejaswinisomisetty22@gmail.com',
-    href: 'mailto:tejaswinisomisetty22@gmail.com',
-    icon: '✉',
-  },
-  {
-    label: 'Phone',
-    value: '+91 79957 14599',
-    href: 'tel:+917995714599',
-    icon: '☏',
-  },
-  {
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/tejaswini-somisetty',
-    href: 'https://www.linkedin.com/in/tejaswini-somisetty-1a7776340?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
-    icon: '⌁',
-  },
-  {
-    label: 'Location',
-    value: 'Bengaluru, Karnataka, India',
-    href: null,
-    icon: '◎',
-  },
-];
-
-const availability = [
-  'Clinical Research Associate Positions',
-  'Hospital Pharmacy Residency',
-  'Healthcare Quality & Accreditation',
-  'Pharmacovigilance & Drug Safety Roles',
-  'Academic & Teaching Positions',
+  { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, icon: Mail },
+  { label: 'Phone', value: profile.phoneDisplay, href: profile.phoneHref, icon: Phone },
+  { label: 'LinkedIn', value: profile.linkedinDisplay, href: profile.linkedin, icon: LinkedInIcon },
+  { label: 'Location', value: profile.city, href: null, icon: MapPin },
 ];
 
 export default function ContactSection() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
   const [copied, setCopied] = useState(false);
 
-  const handleSendMessage = () => {
-    navigator.clipboard.writeText('tejaswinisomisetty22@gmail.com');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-    // Fallback: trigger mailto
-    window.location.href = 'mailto:tejaswinisomisetty22@gmail.com';
+  const sendMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    } catch {
+      // Clipboard can be blocked; the mail app still opens below.
+    }
+    window.location.href = `mailto:${profile.email}`;
   };
 
   return (
-    <section id="contact" className="section-padding scroll-mt-24" ref={ref}>
-      <div className="container">
-        <div className="section-divider mb-20" />
+    <section id="contact" className="section">
+      <div className="shell">
+        <SectionHeading index="07" label="Communication Channel" title="Let’s advance patient care," accent="together." intro={contactIntro} />
 
-        {/* Centered Chapter Heading */}
-        <div className="text-center w-full max-w-3xl mx-auto mb-5 flex flex-col items-center">
-          <motion.span
-            custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="eyebrow block mb-4"
-          >
-            Communication Channel
-          </motion.span>
-          <motion.h2
-            custom={1} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="display-lg text-white font-extrabold tracking-tight uppercase"
-          >
-            CONTACT
-          </motion.h2>
-        </div>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-7">
+            <ul className="border-t border-line">
+              {links.map((l, i) => {
+                const Icon = l.icon;
+                const row = (
+                  <>
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-ice/12 text-ice-2 transition-colors duration-500 group-hover:border-tangerine/50 group-hover:text-tangerine">
+                      <Icon className="h-[18px] w-[18px]" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-mist">{l.label}</span>
+                      <span className="mt-1 block truncate font-display text-[22px] text-ice sm:text-[28px]">{l.value}</span>
+                    </span>
+                    {l.href && (
+                      <ArrowUpRight className="h-5 w-5 shrink-0 text-mist transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-tangerine" />
+                    )}
+                  </>
+                );
+                return (
+                  <Reveal as="li" key={l.label} delay={i * 0.07} className="border-b border-line">
+                    {l.href ? (
+                      <a
+                        href={l.href}
+                        target={l.href.startsWith('http') ? '_blank' : undefined}
+                        rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="group flex items-center gap-5 py-6"
+                      >
+                        {row}
+                      </a>
+                    ) : (
+                      <div className="group flex items-center gap-5 py-6">{row}</div>
+                    )}
+                  </Reveal>
+                );
+              })}
+            </ul>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* ── Left Column: Contact Links ── */}
-          <div className="text-left flex flex-col justify-between h-full min-h-[300px]">
-            <div>
-              <motion.p
-                custom={2} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-                className="text-[#cbd5e1] text-sm leading-[1.8] mb-10"
-              >
-                Doctor of Pharmacy candidate seeking to contribute to clinical pharmacy, pharmacotherapy research, and hospital quality management. Get in touch to discuss research collaborations or clinical vacancies.
-              </motion.p>
-
-              {/* Contact links with generous margin-bottom (mb-16 / 64px spacing) */}
-              <div className="flex flex-col gap-6 mb-16">
-                {links.map((l, i) => (
-                  <motion.div
-                    key={l.label}
-                    custom={i + 3} variants={fadeUp}
-                    initial="hidden" animate={inView ? 'visible' : 'hidden'}
-                    className="flex items-center gap-4"
-                  >
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-base flex-shrink-0 font-mono"
-                      style={{
-                        background: 'rgba(45,212,191,0.07)',
-                        border: '1px solid rgba(45,212,191,0.15)',
-                        color: '#2dd4bf',
-                      }}
-                    >
-                      {l.icon}
-                    </div>
-                    <div>
-                      <div className="text-[#475569] text-[0.65rem] tracking-wider uppercase mb-1.5 font-bold font-mono">{l.label}</div>
-                      {l.href ? (
-                        <a
-                          href={l.href}
-                          target={l.href.startsWith('http') ? '_blank' : undefined}
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-xs py-1.5 px-3 rounded-lg border border-[#2dd4bf]/20 bg-[#2dd4bf]/5 text-[#2dd4bf] hover:bg-[#2dd4bf]/15 hover:border-[#2dd4bf]/40 hover:text-white transition-all duration-300 font-mono font-semibold"
-                        >
-                          {l.value} ↗
-                        </a>
-                      ) : (
-                        <span className="inline-flex items-center gap-2 text-xs py-1.5 px-3 rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#cbd5e1] font-mono font-semibold">
-                          {l.value}
-                        </span>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Direct Send message CTA with mt-12 lg:mt-16 for additional breathing space */}
-            <motion.div
-              custom={6} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-              className="mt-12 lg:mt-16"
-            >
+            <Reveal delay={0.2}>
               <button
-                onClick={handleSendMessage}
-                className="btn-primary inline-flex text-xs py-3.5 px-7 uppercase font-bold tracking-wider relative cursor-pointer"
+                onClick={sendMessage}
+                className="group mt-10 inline-flex items-center gap-2.5 rounded-full bg-tangerine px-8 py-4 text-sm font-semibold text-ink transition-colors hover:bg-tangerine-soft"
               >
-                {copied ? 'Email Copied!' : 'Send a Message'}
+                {copied ? <Check className="h-4 w-4" /> : <Mail className="h-4 w-4" />}
+                {copied ? 'Email copied!' : 'Send a message'}
               </button>
-            </motion.div>
+            </Reveal>
           </div>
 
-          {/* ── Right Column: Academic Availability ── */}
-          <motion.div
-            custom={7} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-          >
-            <div className="relative card p-8 border border-[#2dd4bf]/20 bg-[#0f0f1a]/50 text-center flex flex-col items-center">
-              <span className="text-[8px] font-mono text-[#475569]/70 absolute top-3 right-3 font-bold tracking-widest select-none">[SCOPE // ACTIVE]</span>
-              <span className="text-[#2dd4bf] text-[9px] tracking-widest uppercase font-mono font-bold block mb-4 text-center">
-                PROFESSIONAL SCOPE
-              </span>
-              
-              <h3 className="text-white font-bold text-sm mb-2 uppercase tracking-tight text-center">Focus Clinical Areas</h3>
-              <p className="text-[#cbd5e1] text-xs mb-6 text-center">Completing Pharm.D studies in mid-2026 · Available for full-time roles</p>
-
-              <div className="flex flex-col gap-3 items-center justify-center">
-                {availability.map((item, i) => (
-                  <motion.div
-                    key={item}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ delay: 0.2 + i * 0.05, duration: 0.5 }}
-                    className="flex items-center justify-center gap-3 text-center"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#2dd4bf] flex-shrink-0 animate-pulse" />
-                    <span className="text-[#cbd5e1] text-xs font-semibold">{item}</span>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="section-divider my-6 w-full" />
-
-              <div className="text-[#94a3b8] text-[10px] leading-relaxed font-semibold text-center">
-                Bengaluru, India · Willing to relocate for clinical pharmacy or safety roles.
+          <Reveal delay={0.1} className="lg:col-span-5">
+            <div className="glass relative h-full overflow-hidden rounded-[32px] p-8 md:p-10">
+              <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-tangerine/15 blur-3xl" aria-hidden />
+              <div className="relative">
+                <span className="eyebrow text-tangerine/90">Professional scope</span>
+                <h3 className="mt-4 font-display text-4xl leading-tight text-ice">{availability.heading}</h3>
+                <p className="mt-3 text-[14px] text-ice-2/85">{availability.note}</p>
+                <ul className="mt-7 flex flex-col gap-3">
+                  {availability.roles.map(r => (
+                    <li key={r} className="flex items-center gap-3 border-b border-line pb-3 text-[14.5px] text-ice">
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-tangerine" />
+                      {r}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-6 font-mono text-[11px] leading-relaxed text-mist">{availability.relocation}</p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

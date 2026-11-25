@@ -1,388 +1,219 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { BookOpen, Lock } from 'lucide-react';
+import { thesis } from '@/lib/content';
+import SectionHeading from '@/components/ui/SectionHeading';
+import { CountUp, EASE, Reveal } from '@/components/ui/Motion';
+import TiltCard from '@/components/ui/TiltCard';
 import ThesisViewer from '@/components/ui/ThesisViewer';
 
-const THESIS_TITLE =
-  'A Prospective Observational Study on Compliance with WHO AWaRe Classification in Prescribing Antibiotics in Critical Care Units at a Tertiary Care Hospital';
+const R = 84;
+const C = 2 * Math.PI * R;
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] },
-  }),
-};
+// Each segment starts where the previous one ended.
+const segments = thesis.aware.map((seg, i) => ({
+  ...seg,
+  len: (seg.pct / 100) * C,
+  start: thesis.aware.slice(0, i).reduce((sum, s) => sum + (s.pct / 100) * C, 0),
+}));
 
-const researchMethodology = [
-  { step: '01', name: 'Literature Review', detail: 'Reviewed WHO, ICMR and published ICU studies on antibiotic use and resistance.' },
-  { step: '02', name: 'Data Collection', detail: 'Enrolled 200 ICU and HICU patients prospectively using a structured data collection form.' },
-  { step: '03', name: 'Data Documentation', detail: 'Recorded 341 antibiotics with culture, susceptibility, ADR and IV-to-oral details.' },
-  { step: '04', name: 'Research Analysis', detail: 'Classified drugs by WHO AWaRe 2023/2025; chi-square, Fisher’s exact and t-tests.' },
-  { step: '05', name: 'Report Preparation', detail: 'Wrote and submitted the dissertation to RGUHS for the Pharm.D degree.' },
-];
-
-const awareResults = [
-  { name: 'Access', pct: 6.74, color: '#2dd4bf' },
-  { name: 'Watch', pct: 70.09, color: '#fbbf24' },
-  { name: 'Reserve', pct: 23.17, color: '#f43f5e' },
-];
-
-const studyStats = [
-  { val: '200', label: 'ICU & HICU patients' },
-  { val: '341', label: 'Antibiotics assessed' },
-  { val: '5.0%', label: 'Patients with an ADR' },
-  { val: '6.5%', label: 'IV-to-oral conversion' },
-  { val: '8.5%', label: 'Therapeutic duplication' },
-];
-
-const awareFramework = [
-  { name: 'Access Classification', desc: 'First-line options with lower resistance potential.', drugs: 'Amoxicillin, Ampicillin, Cephalexin', color: '#2dd4bf', glow: 'rgba(45, 212, 191, 0.1)' },
-  { name: 'Watch Classification', desc: 'Restricted options with higher resistance potential.', drugs: 'Ciprofloxacin, Azithromycin, Ceftriaxone', color: '#fbbf24', glow: 'rgba(251, 191, 36, 0.1)' },
-  { name: 'Reserve Classification', desc: 'Last-resort options for multi-drug resistant strains.', drugs: 'Colistin, Linezolid, Polymyxin B', color: '#f43f5e', glow: 'rgba(244, 63, 94, 0.1)' },
-];
-
-const expertiseTags = [
-  'Antibiotic Stewardship',
-  'Rational Drug Use',
-  'Evidence-Based Medicine',
-  'Clinical Research',
-  'Healthcare Outcomes',
-];
-
-const skillCategories = [
-  {
-    title: 'Clinical Skills',
-    icon: '🏥',
-    skills: [
-      'Medication Review',
-      'Prescription Assessment',
-      'ADR Monitoring',
-      'Medication Reconciliation',
-      'Patient Counselling',
-      'Drug Information Services',
-      'Clinical Documentation',
-      'Patient Monitoring',
-    ],
-  },
-  {
-    title: 'Healthcare Quality',
-    icon: '📋',
-    skills: [
-      'Clinical Audit Support',
-      'Documentation Review',
-      'Compliance Monitoring',
-      'Quality Indicator Assessment',
-      'Patient Safety Practices',
-      'Quality Improvement Activities',
-    ],
-  },
-  {
-    title: 'Research Skills',
-    icon: '🔬',
-    skills: [
-      'Literature Review',
-      'Data Collection',
-      'Scientific Writing',
-      'Research Documentation',
-      'Evidence-Based Medicine',
-      'Research Analysis',
-    ],
-  },
-  {
-    title: 'Technical Skills',
-    icon: '💻',
-    skills: [
-      'Microsoft Word / Excel',
-      'Microsoft PowerPoint',
-      'Medical Documentation',
-      'Healthcare Data Mgmt',
-      'Medical Coding (ICD-10)',
-    ],
-  },
-];
-
-const strengths = [
-  'Analytical Thinking',
-  'Communication Skills',
-  'Team Collaboration',
-  'Attention to Detail',
-  'Adaptability',
-  'Problem Solving',
-  'Professionalism',
-  'Time Management',
-  'Leadership Potential',
-];
-
-export default function ResearchSection() {
-  const [thesisOpen, setThesisOpen] = useState(false);
-
-  const ref = useRef(null);
+/** Donut of the AWaRe split with a marker at the WHO 60% Access target. */
+function AwareDonut() {
+  const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
-
-  const skillsRef = useRef(null);
-  const skillsInView = useInView(skillsRef, { once: true, margin: '-80px' });
+  const targetAngle = (thesis.target / 100) * 360 - 90;
+  const rad = (targetAngle * Math.PI) / 180;
+  const inner = { x: 110 + Math.cos(rad) * (R - 16), y: 110 + Math.sin(rad) * (R - 16) };
+  const outer = { x: 110 + Math.cos(rad) * (R + 16), y: 110 + Math.sin(rad) * (R + 16) };
 
   return (
-    <>
-      <section id="research" className="section-padding scroll-mt-24" ref={ref}>
-        <div className="container">
-          <div className="section-divider mb-20" />
-
-          {/* Centered Chapter Heading */}
-          <div className="text-center w-full max-w-3xl mx-auto mb-5 flex flex-col items-center">
-            <motion.span
-              custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-              className="eyebrow block mb-4"
-            >
-              Clinical Studies &amp; Audits
-            </motion.span>
-            <motion.h2
-              custom={1} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-              className="display-lg text-white font-extrabold tracking-tight uppercase"
-            >
-              RESEARCH &amp; THESIS
-            </motion.h2>
-          </div>
-
-          {/* Cinematic Research Card */}
-          <motion.div
-            custom={2} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="relative card p-8 border border-[#2dd4bf]/20 bg-[#0f0f1a]/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-14"
-          >
-            <span className="text-[8px] font-mono text-[#475569]/70 absolute top-3 right-3 font-bold tracking-widest select-none">[RES.DOC // WHO.AWARE]</span>
-            {/* Metadata badges */}
-            <div className="flex flex-wrap items-center justify-center gap-2.5 mb-6 text-center">
-              <span className="tag text-[9px] font-semibold py-1 px-3 bg-violet-500/10 border-violet-500/25 text-violet-400">
-                PROSPECTIVE OBSERVATIONAL STUDY
-              </span>
-              <span className="tag text-[9px] font-semibold py-1 px-3 bg-[#2dd4bf]/10 border-[#2dd4bf]/25 text-[#2dd4bf]">
-                WHO AWARE CLASSIFICATION
-              </span>
-              <span className="tag text-[9px] font-semibold py-1 px-3 bg-rose-500/10 border-rose-500/25 text-rose-400">
-                CRITICAL CARE
-              </span>
-              <span className="text-[#334155] text-xs font-mono">Bengaluru, India</span>
-            </div>
-
-            {/* Research Title */}
-            <h3 className="text-white font-bold text-lg md:text-xl leading-snug text-center" style={{ margin: "0 0 12px" }}>
-              {THESIS_TITLE}
-            </h3>
-            <p className="text-[#94a3b8] text-[11px] font-mono text-center" style={{ margin: "0 0 20px" }}>
-              Pharm.D Dissertation · Rajiv Gandhi University of Health Sciences · Guide: Dr. Balakeshwa Ramaiah, HOD, Dept. of Pharmacy Practice
-            </p>
-
-            {/* Study Description */}
-            <p className="text-[#cbd5e1] text-xs md:text-sm leading-relaxed text-center max-w-3xl" style={{ margin: "0 auto 28px" }}>
-              Assessed whether antibiotic prescribing in the ICU and HICU of a tertiary care teaching hospital followed the WHO AWaRe (Access, Watch, Reserve) classification, and evaluated prescribing appropriateness, the microbiological and resistance profile, adverse drug reactions, IV-to-oral conversion and therapeutic duplication.
-            </p>
-
-            {/* View Thesis */}
-            <div className="flex justify-center" style={{ marginBottom: 40 }}>
-              <button
-                onClick={() => setThesisOpen(true)}
-                className="btn-primary text-xs tracking-wider uppercase py-3.5 px-7 font-bold cursor-pointer"
-              >
-                View Full Thesis
-              </button>
-            </div>
-
-            {/* Key Findings */}
-            <div className="border-t border-white/[0.04]" style={{ paddingTop: 32, marginBottom: 40 }}>
-              <span className="text-[#475569] text-[9px] font-mono font-bold tracking-widest block text-center" style={{ marginBottom: 40 }}>
-                KEY FINDINGS
-              </span>
-
-              {/* AWaRe distribution vs WHO 60% Access target */}
-              <div className="max-w-3xl" style={{ margin: "0 auto" }}>
-                <div className="relative">
-                  <div className="flex h-4 w-full rounded-full overflow-hidden border border-white/[0.06]">
-                    {awareResults.map(r => (
-                      <motion.div
-                        key={r.name}
-                        initial={{ width: 0 }}
-                        animate={inView ? { width: `${r.pct}%` } : { width: 0 }}
-                        transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        style={{ backgroundColor: r.color }}
-                        title={`${r.name}: ${r.pct}%`}
-                      />
-                    ))}
-                  </div>
-                  <div className="absolute -top-1.5 -bottom-1.5 w-px bg-white/70" style={{ left: '60%' }} />
-                  <span className="absolute -top-6 text-[9px] font-mono text-white/80 -translate-x-1/2 whitespace-nowrap" style={{ left: '60%' }}>
-                    WHO target: ≥60% Access
-                  </span>
-                </div>
-                <div className="flex flex-wrap justify-center gap-x-6 gap-y-2" style={{ marginTop: 16 }}>
-                  {awareResults.map(r => (
-                    <div key={r.name} className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: r.color }} />
-                      <span className="text-[#cbd5e1] text-[11px] font-semibold">{r.name}</span>
-                      <span className="text-white text-[11px] font-mono font-bold">{r.pct}%</span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-[#94a3b8] text-[11px] leading-relaxed text-center" style={{ marginTop: 16 }}>
-                  Access antibiotics made up only 6.74% of prescriptions, far below the WHO target. Klebsiella pneumoniae and E. coli were the main isolates, with high resistance to early-generation cephalosporins and ampicillin and emerging colistin resistance.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3" style={{ marginTop: 32 }}>
-                {studyStats.map(s => (
-                  <div key={s.label} className="card-subtle text-center border border-[#2dd4bf]/10 last:col-span-2 sm:last:col-span-1" style={{ padding: 16 }}>
-                    <div className="text-white text-lg font-bold tracking-tight">{s.val}</div>
-                    <div className="text-[#94a3b8] text-[9px] font-mono font-bold uppercase tracking-wider mt-1 leading-tight">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          {/* Visual Blueprints Grid */}
-          <div className="grid lg:grid-cols-12 gap-8 text-left mt-8 pt-8 border-t border-white/[0.04]">
-            
-            {/* Left: Research Activities Pathway Diagram */}
-            <div className="lg:col-span-5 flex flex-col gap-4">
-              <span className="text-[#475569] text-[9px] font-mono font-bold tracking-widest block mb-4 text-center">
-                RESEARCH METHODOLOGY
-              </span>
-              
-              <div className="flex flex-col gap-4 relative">
-                <div className="absolute left-[13px] top-4 bottom-4 w-[1px] bg-gradient-to-b from-[#a78bfa]/40 to-transparent" />
-                
-                {researchMethodology.map((meth, idx) => (
-                  <div key={idx} className="flex gap-4 items-start relative z-10">
-                    <div className="w-6 h-6 rounded-full bg-[#0f0f1a] border border-[#a78bfa]/30 flex items-center justify-center text-[8px] text-[#a78bfa] font-mono font-bold flex-shrink-0">
-                      {meth.step}
-                    </div>
-                    <div>
-                      <h4 className="text-white text-xs font-bold font-mono tracking-tight uppercase">{meth.name}</h4>
-                      <p className="text-[#cbd5e1] text-[10px] leading-relaxed mt-0.5">{meth.detail}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right: WHO AWaRe Classification Graphic */}
-            <div className="lg:col-span-7 flex flex-col gap-4">
-              <span className="text-[#475569] text-[9px] font-mono font-bold tracking-widest block mb-4 text-center">
-                WHO AWARE CLASSIFICATION FRAMEWORK
-              </span>
-              
-              <div className="flex flex-col gap-3">
-                {awareFramework.map((aware, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-xl border flex flex-col gap-1 text-left transition-all duration-300 hover:scale-[1.01]"
-                    style={{
-                      borderColor: `${aware.color}25`,
-                      background: `linear-gradient(135deg, ${aware.color}03, transparent)`,
-                      boxShadow: `0 4px 20px ${aware.glow}`
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: aware.color }} />
-                      <h4 className="text-xs font-bold font-mono uppercase" style={{ color: aware.color }}>{aware.name}</h4>
-                    </div>
-                    <p className="text-[#cbd5e1] text-[10px] leading-normal">{aware.desc}</p>
-                    <div className="text-[9px] font-mono text-[#475569] mt-1 font-bold">
-                      EXAMPLES: <span className="text-[#94a3b8]">{aware.drugs}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Bottom tag list */}
-          <div className="border-t border-white/[0.04] pt-6 mt-8 flex flex-wrap items-center justify-center gap-3">
-            <span className="text-[#475569] text-[9px] font-mono font-bold uppercase tracking-wider mr-2">RESEARCH EXPERTISE</span>
-            <div className="flex flex-wrap gap-2.5 justify-center">
-              {expertiseTags.map((tag, idx) => (
-                <span key={idx} className="tag text-[9px] py-1 px-3 bg-white/[0.015] text-[#94a3b8]">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-
-    {/* Dedicated Skills Section */}
-    <section id="skills" className="section-padding scroll-mt-24" ref={skillsRef}>
-      <div className="container">
-        {/* Centered Skills & Competencies Chapter Heading */}
-        <div className="mb-5 text-center flex flex-col items-center">
-          <motion.span
-            custom={0.5} variants={fadeUp} initial="hidden" animate={skillsInView ? 'visible' : 'hidden'}
-            className="eyebrow block mb-4"
-          >
-            Verified Skillsets
-          </motion.span>
-          <motion.h2
-            custom={1} variants={fadeUp} initial="hidden" animate={skillsInView ? 'visible' : 'hidden'}
-            className="display-lg text-white font-extrabold tracking-tight uppercase"
-          >
-            SKILLS &amp; COMPETENCIES
-          </motion.h2>
-        </div>
-
-        {/* Skills Directory Card Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-          {skillCategories.map((cat, idx) => (
-            <motion.div
-              key={idx}
-              custom={idx + 2} variants={fadeUp}
-              initial="hidden" animate={skillsInView ? 'visible' : 'hidden'}
-              className="relative card p-6 flex flex-col border border-[#2dd4bf]/15 bg-[#0f0f1a]/20 shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:border-[#2dd4bf]/40 transition-all duration-300"
-            >
-              <span className="text-[8px] font-mono text-[#475569]/75 absolute top-2 right-2 font-bold select-none">[SKL.SEC // 0{idx+1}]</span>
-              <div>
-                {/* Header Centered */}
-                <div className="flex items-center justify-center gap-3 mb-5 pb-3 border-b border-white/[0.04]">
-                  <span className="text-lg">{cat.icon}</span>
-                  <h3 className="text-white text-xs font-bold tracking-tight uppercase font-mono">{cat.title}</h3>
-                </div>
-
-                {/* Skills list centered */}
-                <div className="flex flex-col gap-2.5 items-center">
-                  {cat.skills.map((skill, sIdx) => (
-                    <div key={sIdx} className="flex items-center gap-2.5 text-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#2dd4bf]/40 flex-shrink-0" />
-                      <span className="text-[#cbd5e1] text-xs font-medium leading-tight">{skill}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+    <figure className="relative mx-auto w-full max-w-[300px]">
+      <svg ref={ref} viewBox="0 0 220 220" className="w-full" role="img" aria-label="AWaRe split: Access 6.74%, Watch 70.09%, Reserve 23.17%. WHO target is at least 60% Access.">
+        <circle cx="110" cy="110" r={R} fill="none" stroke="rgb(233 240 245 / 0.06)" strokeWidth="18" />
+        <g transform="rotate(-90 110 110)">
+          {segments.map((seg, i) => (
+            <motion.circle
+              key={seg.name}
+              cx="110"
+              cy="110"
+              r={R}
+              fill="none"
+              stroke={seg.color}
+              strokeWidth="18"
+              strokeDashoffset={-seg.start}
+              initial={{ strokeDasharray: `0 ${C}` }}
+              animate={inView ? { strokeDasharray: `${Math.max(seg.len - 2, 0)} ${C}` } : undefined}
+              transition={{ duration: 1.4, delay: 0.2 + i * 0.25, ease: EASE }}
+            />
           ))}
+        </g>
+        <line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke="#e9f0f5" strokeWidth="2" strokeDasharray="3 3" />
+      </svg>
+      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
+        <div className="font-display text-5xl text-ice">
+          <CountUp value={6.74} decimals={2} suffix="%" />
+        </div>
+        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-mist">Access use</div>
+        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-tangerine">Target ≥ {thesis.target}%</div>
+      </div>
+    </figure>
+  );
+}
+
+function Methodology() {
+  const ref = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 85%', 'end 55%'] });
+  const grow = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  return (
+    <div className="mt-20">
+      <Reveal>
+        <div className="mb-8 flex items-center gap-3">
+          <span className="h-px w-10 bg-tangerine/50" />
+          <h3 className="eyebrow">Research methodology</h3>
+        </div>
+      </Reveal>
+      <ol ref={ref} className="relative grid gap-8 md:grid-cols-5 md:gap-5">
+        <div className="absolute left-[15px] top-2 hidden h-px w-[calc(100%-30px)] bg-line md:block" aria-hidden>
+          <motion.div style={{ scaleX: grow }} className="h-full origin-left bg-tangerine" />
+        </div>
+        {thesis.methodology.map((m, i) => (
+          <Reveal as="li" key={m.name} delay={i * 0.08} className="relative flex gap-4 md:block">
+            <span className="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-tangerine/50 bg-ink font-mono text-[10px] text-tangerine md:mb-5 md:-mt-2">
+              0{i + 1}
+            </span>
+            <div>
+              <h4 className="font-display text-2xl text-ice">{m.name}</h4>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ice-2/80">{m.detail}</p>
+            </div>
+          </Reveal>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+export default function ResearchSection() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <section id="research" className="section">
+      <div className="shell">
+        <SectionHeading index="04" label="Clinical Studies & Audits" title="Research" accent="& thesis." />
+
+        {/* Thesis spotlight */}
+        <Reveal>
+          <TiltCard max={2.5} className="glass overflow-hidden rounded-[36px]">
+            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-tangerine/15 blur-3xl" aria-hidden />
+            <div className="relative p-7 md:p-12">
+              <div className="flex flex-wrap items-center gap-2.5">
+                {thesis.tags.map(t => (
+                  <span key={t} className="rounded-full border border-ice/12 bg-ice/[0.03] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ice-2">
+                    {t}
+                  </span>
+                ))}
+                <span className="font-mono text-[11px] text-mist">{thesis.location}</span>
+              </div>
+
+              <h3 className="mt-7 max-w-5xl font-display text-[30px] leading-[1.12] text-ice md:text-5xl">{thesis.title}</h3>
+              <p className="mt-5 font-mono text-[11px] leading-relaxed tracking-[0.06em] text-mist">{thesis.meta}</p>
+              <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ice-2/85">{thesis.description}</p>
+
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => setOpen(true)}
+                  className="group inline-flex items-center gap-2.5 rounded-full bg-tangerine px-7 py-4 text-sm font-semibold text-ink transition-colors hover:bg-tangerine-soft"
+                >
+                  <BookOpen className="h-4 w-4" />
+                  View full thesis
+                </button>
+                <span className="inline-flex items-center gap-2 font-mono text-[11px] text-mist">
+                  <Lock className="h-3.5 w-3.5" /> 112 pages · view only
+                </span>
+              </div>
+
+              {/* Key findings */}
+              <div className="mt-12 grid items-center gap-10 border-t border-line pt-10 lg:grid-cols-12">
+                <div className="lg:col-span-4">
+                  <AwareDonut />
+                </div>
+                <div className="lg:col-span-8">
+                  <span className="eyebrow">Key findings</span>
+                  <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+                    {thesis.aware.map(a => (
+                      <li key={a.name} className="flex items-center gap-2 text-[14px]">
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: a.color }} />
+                        <span className="text-ice-2">{a.name}</span>
+                        <span className="font-mono font-medium text-ice">{a.pct}%</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-5 text-[14.5px] leading-relaxed text-ice-2/85">{thesis.findingNote}</p>
+                  <dl className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                    {thesis.stats.map(s => (
+                      <div key={s.label} className="flex flex-col rounded-2xl border border-line bg-ice/[0.02] p-4 last:col-span-2 sm:last:col-span-1">
+                        <dt className="order-last mt-1 font-mono text-[9.5px] uppercase leading-tight tracking-[0.12em] text-mist">{s.label}</dt>
+                        <dd className="font-display text-3xl text-ice">
+                          <CountUp value={s.value} decimals={s.decimals} suffix={s.suffix} />
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </TiltCard>
+        </Reveal>
+
+        <Methodology />
+
+        {/* WHO AWaRe framework */}
+        <div className="mt-20">
+          <Reveal>
+            <div className="mb-8 flex items-center gap-3">
+              <span className="h-px w-10 bg-tangerine/50" />
+              <h3 className="eyebrow">WHO AWaRe classification framework</h3>
+            </div>
+          </Reveal>
+          <ul className="grid gap-4 md:grid-cols-3">
+            {thesis.framework.map((f, i) => (
+              <Reveal as="li" key={f.name} delay={i * 0.08}>
+                <TiltCard max={6} className="h-full overflow-hidden rounded-3xl border border-line bg-ink-2/70">
+                  <div className="absolute inset-x-0 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${f.color}, transparent)` }} />
+                  <div className="relative p-7">
+                    <div className="flex items-center gap-2.5">
+                      <span className="h-2.5 w-2.5 rounded-full" style={{ background: f.color, boxShadow: `0 0 16px ${f.color}` }} />
+                      <span className="font-mono text-[11px] uppercase tracking-[0.18em]" style={{ color: f.color }}>
+                        {f.name} classification
+                      </span>
+                    </div>
+                    <p className="mt-5 font-display text-2xl leading-snug text-ice">{f.desc}</p>
+                    <p className="mt-5 font-mono text-[11px] text-mist">
+                      Examples: <span className="text-ice-2">{f.drugs}</span>
+                    </p>
+                  </div>
+                </TiltCard>
+              </Reveal>
+            ))}
+          </ul>
         </div>
 
-        {/* Professional Strengths */}
-        <motion.div
-          custom={6} variants={fadeUp}
-          initial="hidden" animate={skillsInView ? 'visible' : 'hidden'}
-          className="text-center" style={{ marginTop: 48 }}
-        >
-          <span className="text-[#475569] text-[9px] font-mono font-bold tracking-widest block" style={{ marginBottom: 16 }}>
-            PROFESSIONAL STRENGTHS
-          </span>
-          <div className="flex flex-wrap gap-2.5 justify-center max-w-3xl" style={{ margin: "0 auto" }}>
-            {strengths.map(s => (
-              <span key={s} className="tag text-[10px] py-1.5 px-3 bg-white/[0.015] text-[#cbd5e1] font-semibold">
-                {s}
+        {/* Research expertise */}
+        <Reveal>
+          <div className="mt-14 flex flex-wrap items-center gap-3">
+            <span className="eyebrow mr-2">Research expertise</span>
+            {thesis.expertise.map(t => (
+              <span key={t} className="chip">
+                {t}
               </span>
             ))}
           </div>
-        </motion.div>
+        </Reveal>
       </div>
-    </section>
 
-    <ThesisViewer open={thesisOpen} onClose={() => setThesisOpen(false)} title={THESIS_TITLE} />
-  </>
+      <ThesisViewer open={open} onClose={() => setOpen(false)} title={thesis.title} />
+    </section>
   );
 }

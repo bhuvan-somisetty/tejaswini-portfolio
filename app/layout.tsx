@@ -1,15 +1,32 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Instrument_Serif, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const instrument = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument",
   display: "swap",
 });
 
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
+
+const SITE_URL = "https://tejaswini-portfolio-blond.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Tejaswini Somisetty | Pharm.D Candidate & Clinical Pharmacy",
   description:
     "Portfolio of Tejaswini Somisetty — Final-Year Pharm.D Candidate specialising in Clinical Pharmacy, Healthcare Quality, Patient Safety, and Antibiotic Stewardship at Karnataka College of Pharmacy, Bengaluru.",
@@ -38,6 +55,7 @@ export const metadata: Metadata = {
   creator: "Tejaswini Somisetty",
   openGraph: {
     type: "website",
+    url: SITE_URL,
     title: "Tejaswini Somisetty | Clinical Pharmacy Portfolio",
     description:
       "Final-Year Pharm.D Candidate specialising in clinical pharmacy, patient safety, and evidence-based medicine.",
@@ -52,25 +70,47 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#050b14",
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Tejaswini Somisetty",
+  jobTitle: "Pharm.D Candidate",
+  url: SITE_URL,
+  email: "mailto:tejaswinisomisetty22@gmail.com",
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Karnataka College of Pharmacy" },
+  address: { "@type": "PostalAddress", addressLocality: "Bengaluru", addressRegion: "Karnataka", addressCountry: "IN" },
+  knowsLanguage: ["Telugu", "English", "Kannada", "Hindi"],
+  knowsAbout: [
+    "Clinical Pharmacy",
+    "Healthcare Quality",
+    "Patient Safety",
+    "Clinical Research",
+    "Pharmacovigilance",
+    "Medication Safety",
+    "Antibiotic Stewardship",
+    "Evidence-Based Medicine",
+  ],
+  sameAs: ["https://www.linkedin.com/in/tejaswini-somisetty-1a7776340"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#09090f" />
-      </head>
-      <body
-        style={{
-          backgroundColor: "#09090f",
-          color: "#f1f5f9",
-          fontFamily: "var(--font-inter), system-ui, sans-serif",
-          overflowX: "clip",
-        }}
-      >
+    <html lang="en" className={`${instrument.variable} ${manrope.variable} ${jetbrains.variable}`}>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         {children}
       </body>
     </html>

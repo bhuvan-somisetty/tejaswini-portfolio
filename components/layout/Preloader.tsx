@@ -1,70 +1,69 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { EASE } from '@/components/ui/Motion';
 
-interface Props {
-  onComplete: () => void;
-}
-
-export default function Preloader({ onComplete }: Props) {
+/** Short intro: a capsule fills with the load percentage, then the curtain lifts. */
+export default function Preloader({ onDone }: { onDone: () => void }) {
   const [progress, setProgress] = useState(0);
-  const [done, setDone] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress(p => {
-        if (p >= 100) {
-          clearInterval(interval);
-          setTimeout(() => { setDone(true); setTimeout(onComplete, 500); }, 200);
-          return 100;
-        }
-        return p + Math.random() * 18 + 6;
-      });
-    }, 90);
-    return () => clearInterval(interval);
-  }, [onComplete]);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const duration = reduce ? 300 : 1700;
+    const root = document.documentElement;
+    root.style.overflow = 'hidden';
+    let raf = 0;
+    let timer: ReturnType<typeof setTimeout>;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      setProgress(Math.round((1 - Math.pow(1 - t, 3)) * 100));
+      if (t < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        timer = setTimeout(() => {
+          setVisible(false);
+          root.style.overflow = '';
+          onDone();
+        }, reduce ? 0 : 250);
+      }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(timer);
+      root.style.overflow = '';
+    };
+  }, [onDone]);
 
   return (
     <AnimatePresence>
-      {!done && (
+      {visible && (
         <motion.div
-          key="preloader"
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
-          style={{ background: '#09090f' }}
-          exit={{ opacity: 0, transition: { duration: 0.6 } }}
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-ink"
+          initial={{ clipPath: 'inset(0 0 0% 0)' }}
+          exit={{ clipPath: 'inset(0 0 100% 0)' }}
+          transition={{ duration: 1, ease: EASE }}
+          role="status"
+          aria-label="Loading portfolio"
         >
-          {/* Wordmark */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-14"
-          >
-            <div className="text-white font-bold text-xl tracking-tight mb-1">
-              Tejaswini Somisetty
+          <div className="flex flex-col items-center gap-8">
+            {/* Capsule loader */}
+            <div className="relative h-[120px] w-[52px] rotate-[24deg] overflow-hidden rounded-full border border-ice/20">
+              <div className="absolute bottom-0 left-0 right-0 bg-tangerine" style={{ height: `${progress}%` }} />
+              <div className="absolute inset-x-0 top-1/2 h-px bg-ice/25" />
             </div>
-            <div className="text-[#475569] text-xs tracking-[0.2em]">PHARM.D CANDIDATE</div>
-          </motion.div>
-
-          {/* Progress bar */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="w-48"
-          >
-            <div className="h-[1px] bg-[#1e293b] rounded overflow-hidden">
-              <motion.div
-                className="h-full bg-[#2dd4bf]"
-                style={{ width: `${Math.min(progress, 100)}%` }}
-                transition={{ ease: 'easeOut' }}
-              />
+            <div className="text-center">
+              <div className="font-display text-3xl tracking-tight text-ice">
+                Tejaswini <span className="italic text-tangerine-soft">Somisetty</span>
+              </div>
+              <div className="mt-3 font-mono text-[11px] tracking-[0.3em] text-mist tabular-nums">
+                PHARM.D · {String(progress).padStart(3, '0')}%
+              </div>
             </div>
-            <div className="text-[#334155] text-[10px] text-right mt-2 tabular-nums">
-              {Math.min(Math.round(progress), 100)}%
-            </div>
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

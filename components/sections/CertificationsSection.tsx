@@ -1,187 +1,87 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.6, delay: i * 0.09, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] },
-  }),
-};
-
-const certifications = [
-  {
-    title: 'Basic Life Support (BLS)',
-    issuer: 'Hands-on Resuscitation Training',
-    status: 'Trained',
-    icon: '❤️',
-    color: '#f43f5e',
-    desc: 'High-quality CPR for adults, children and infants, early AED use, rescue breaths with a barrier device, choking relief, the Chain of Survival and team-based resuscitation.',
-  },
-  {
-    title: 'Ethics Review of Health Research',
-    issuer: 'Healthcare Research Authority',
-    status: 'Professional',
-    icon: '⚖️',
-    color: '#2dd4bf',
-    desc: 'Research ethics, ethical review processes, and responsible conduct of health research.',
-  },
-  {
-    title: 'Scientific Writing in Health Research',
-    issuer: 'Academic Medical Consortium',
-    status: 'Advanced',
-    icon: '✍️',
-    color: '#60a5fa',
-    desc: 'Scientific communication, research writing, manuscript preparation, and academic publication.',
-  },
-  {
-    title: 'AI in Women’s Health',
-    issuer: 'Healthcare Innovation Summit',
-    status: 'Participation',
-    icon: '🤖',
-    color: '#a78bfa',
-    desc: 'Artificial Intelligence applications in women\'s health and future healthcare innovations.',
-  },
-  {
-    title: 'Medical Coding Certification',
-    issuer: 'E-Cell IIT Hyderabad · Skill Duniya',
-    status: 'Certified',
-    icon: '🔢',
-    color: '#f43f5e',
-    desc: 'Medical coding fundamentals, healthcare documentation, and coding systems (ICD/CPT).',
-  },
-];
-
-const conferenceBullets = [
-  'International academic exposure',
-  'Professional networking',
-  'Current healthcare developments',
-  'Learning from healthcare experts',
-];
-
-const workshops = [
-  'Clinical Pharmacy',
-  'Pharmacovigilance',
-  'Healthcare Quality',
-  'Medication Safety',
-  'AI in Healthcare',
-  'Research Methodology',
-  'Emerging Healthcare Technologies',
-];
+import { Globe } from 'lucide-react';
+import { certifications, conference, workshops } from '@/lib/content';
+import SectionHeading from '@/components/ui/SectionHeading';
+import { Reveal } from '@/components/ui/Motion';
+import { certIcons } from '@/components/ui/Icons';
+import TiltCard from '@/components/ui/TiltCard';
 
 export default function CertificationsSection() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
-
   return (
-    <section id="certifications" className="section-padding scroll-mt-24" ref={ref}>
-      <div className="container">
-        <div className="section-divider mb-20" />
+    <section id="certifications" className="section">
+      <div className="shell">
+        <SectionHeading index="06" label="Credentials & Milestones" title="Certifications &" accent="achievements." />
 
-        {/* Centered Chapter Heading */}
-        <div className="text-center w-full max-w-3xl mx-auto mb-5 flex flex-col items-center">
-          <motion.span
-            custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="eyebrow block mb-4"
-          >
-            Credentials &amp; Milestones
-          </motion.span>
-          <motion.h2
-            custom={1} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="display-lg text-white font-extrabold tracking-tight uppercase"
-          >
-            CERTIFICATIONS &amp; ACHIEVEMENTS
-          </motion.h2>
-        </div>
-
-        {/* Certifications grid (Merged into one grid to keep spacing uniform and spacious) */}
-        <div className="grid sm:grid-cols-2 gap-8 lg:gap-10">
-          {certifications.map((c, i) => (
-            <motion.div
-              key={c.title}
-              custom={i + 2} variants={fadeUp}
-              initial="hidden" animate={inView ? 'visible' : 'hidden'}
-              className="relative card p-8 flex flex-col items-center justify-between h-full border border-[#2dd4bf]/15 bg-[#0f0f1a]/20 shadow-[0_4px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:scale-[1.01]"
-            >
-              <span className="text-[8px] font-mono text-[#475569]/70 absolute top-3 right-3 font-bold tracking-widest select-none">[CRED.CERT // AUTH.0{i+1}]</span>
-              <div className="flex flex-col items-center text-center w-full">
-                {/* Glowing Icon Container */}
-                <div className="w-12 h-12 rounded-xl bg-[#2dd4bf]/10 border border-[#2dd4bf]/20 flex items-center justify-center text-xl mb-4 shadow-[0_0_15px_rgba(45,212,191,0.1)]">
-                  {c.icon}
-                </div>
-                {/* Title */}
-                <h4 className="text-white text-xs font-bold font-mono uppercase tracking-tight text-center mb-1">{c.title}</h4>
-                {/* Issuer */}
-                <p className="text-[#94a3b8] text-[10px] text-center mb-3">{c.issuer}</p>
-                {/* Status Tag */}
-                <div className="flex justify-center mb-4">
-                  <span className="tag tag-teal text-[9px] font-semibold py-0.5 px-2 bg-[#2dd4bf]/10 text-[#2dd4bf] border-[#2dd4bf]/20">
-                    {c.status}
-                  </span>
-                </div>
-                {/* Description */}
-                <p className="text-[#cbd5e1] text-xs leading-relaxed text-center">{c.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-
-          {/* 1. Conferences & Academic Events card */}
-          <motion.div
-            custom={6} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="relative card p-8 border border-[#2dd4bf]/15 bg-[#0f0f1a]/20 shadow-[0_4px_25px_rgba(0,0,0,0.15)] flex flex-col justify-between"
-          >
-            <span className="text-[8px] font-mono text-[#475569]/70 absolute top-3 right-3 font-bold tracking-widest select-none">[CONF.ACD // IPCON.26]</span>
-            <div>
-              <span className="text-[#475569] text-[9px] font-mono font-bold tracking-widest block mb-6 text-center">
-                CONFERENCES &amp; ACADEMIC EVENTS
-              </span>
-              <div className="flex flex-col items-center justify-center mb-6 text-center">
-                <span className="text-2xl mb-2">🌐</span>
-                <div>
-                  <h4 className="text-white text-sm font-bold font-mono uppercase tracking-tight">
-                    IPCON International Conference
-                  </h4>
-                  <p className="text-[#2dd4bf] text-[10px] font-mono mt-1">International Pharmacy Conference (IPCON)</p>
-                </div>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4 mt-6 max-w-md mx-auto">
-                {conferenceBullets.map((bullet, idx) => (
-                  <div key={idx} className="flex items-center justify-center gap-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#2dd4bf] flex-shrink-0 animate-pulse" />
-                    <span className="text-[#cbd5e1] text-[11px] font-semibold text-center sm:text-left">{bullet}</span>
+        <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {certifications.map((c, i) => {
+            const Icon = certIcons[c.icon];
+            return (
+              <Reveal as="li" key={c.title} delay={(i % 3) * 0.08}>
+                <TiltCard max={7} className="glass h-full overflow-hidden rounded-[28px]">
+                  <div className="relative flex h-full flex-col p-7">
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="grid h-12 w-12 place-items-center rounded-2xl border border-tangerine/30 bg-gradient-to-br from-tangerine/20 to-transparent text-tangerine">
+                        <Icon className="h-5 w-5" strokeWidth={1.6} />
+                      </span>
+                      <span className="rounded-full border border-ice/12 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ice-2">
+                        {c.status}
+                      </span>
+                    </div>
+                    <h3 className="mt-6 font-display text-[26px] leading-tight text-ice">{c.title}</h3>
+                    <p className="mt-1.5 font-mono text-[11px] text-mist">{c.issuer}</p>
+                    <p className="mt-4 text-[14px] leading-relaxed text-ice-2/85">{c.desc}</p>
                   </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
+                </TiltCard>
+              </Reveal>
+            );
+          })}
 
-          {/* 2. Seminars & Workshops (full width so the 2-column grid stays even) */}
-          <motion.div
-            custom={7} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-            className="relative card sm:col-span-2 p-8 border border-[#2dd4bf]/15 bg-[#0f0f1a]/20 shadow-[0_4px_25px_rgba(0,0,0,0.15)] flex flex-col justify-between"
-          >
-            <span className="text-[8px] font-mono text-[#475569]/70 absolute top-3 right-3 font-bold tracking-widest select-none">[SEM.WKS // 07.CLN]</span>
-            <div>
-              <span className="text-[#475569] text-[9px] font-mono font-bold tracking-widest block mb-6 text-center">
-                SEMINARS &amp; WORKSHOPS
-              </span>
-              <div className="flex flex-wrap gap-2.5 justify-center mt-6">
-                {workshops.map((w, idx) => (
-                  <span
-                    key={idx}
-                    className="tag text-[10px] py-2 px-3 bg-white/[0.015] border-white/[0.04] text-[#cbd5e1] font-semibold"
-                  >
-                    {w}
+          {/* Conference */}
+          <Reveal as="li" delay={0.16}>
+            <TiltCard max={7} className="h-full overflow-hidden rounded-[28px] border border-tangerine/25 bg-gradient-to-br from-tangerine/[0.12] via-ink-2/80 to-ink-2/80">
+              <div className="relative flex h-full flex-col p-7">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-tangerine text-ink">
+                    <Globe className="h-5 w-5" strokeWidth={1.8} />
                   </span>
-                ))}
+                  <span className="rounded-full border border-tangerine/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-tangerine">
+                    {conference.role}
+                  </span>
+                </div>
+                <h3 className="mt-6 font-display text-[26px] leading-tight text-ice">{conference.name}</h3>
+                <p className="mt-1.5 font-mono text-[11px] text-mist">{conference.full}</p>
+                <ul className="mt-4 grid gap-2">
+                  {conference.outcomes.map(o => (
+                    <li key={o} className="flex items-center gap-3 text-[14px] text-ice-2/90">
+                      <span className="h-1 w-1 rounded-full bg-tangerine" />
+                      {o}
+                    </li>
+                  ))}
+                </ul>
               </div>
+            </TiltCard>
+          </Reveal>
+        </ul>
+
+        {/* Seminars & workshops */}
+        <Reveal>
+          <div className="glass mt-6 flex flex-col gap-6 rounded-[28px] p-7 md:flex-row md:items-center md:p-9">
+            <div className="md:w-64 md:shrink-0">
+              <h3 className="font-display text-3xl text-ice">
+                Seminars &amp; <span className="italic text-tangerine-soft">workshops</span>
+              </h3>
+              <p className="mt-1.5 text-[13px] text-mist">Academic sessions attended on</p>
             </div>
-          </motion.div>
-        </div>
-
-
+            <ul className="flex flex-wrap gap-2.5">
+              {workshops.map(w => (
+                <li key={w} className="chip text-[13.5px]">
+                  {w}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
