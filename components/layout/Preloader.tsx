@@ -65,8 +65,6 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
     onDone();
   }, [stage, onDone]);
 
-  const skip = () => setStage('done');
-
   return (
     <AnimatePresence>
       {stage !== 'done' && (
@@ -123,13 +121,6 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
             animate={{ opacity: stage === 'grain' ? 0.9 : 0 }}
             transition={{ duration: 0.5, ease: 'easeIn' }}
           />
-
-          <button
-            onClick={skip}
-            className="absolute bottom-8 right-8 font-mono text-[10px] uppercase tracking-[0.25em] text-mist transition-colors hover:text-ice"
-          >
-            Skip intro
-          </button>
         </motion.div>
       )}
     </AnimatePresence>
