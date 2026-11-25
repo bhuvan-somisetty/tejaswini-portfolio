@@ -73,7 +73,7 @@ export default function ExpertiseSection() {
                   >
                     <div className="flex items-start justify-between gap-6">
                       <div>
-                        <span className="eyebrow text-accent/90">Practice domain</span>
+                        <span className="eyebrow text-gold">Practice domain</span>
                         <h3 className="mt-3 font-display text-4xl leading-tight text-ice md:text-5xl">{active.title}</h3>
                       </div>
                       <span className="grid h-16 w-16 shrink-0 place-items-center rounded-3xl border border-accent/30 bg-gradient-to-br from-accent/20 to-transparent text-accent">

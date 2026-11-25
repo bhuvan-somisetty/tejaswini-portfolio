@@ -30,7 +30,7 @@ function SpecialtyMarquee() {
               className="flex shrink-0 items-center gap-10 pr-10 font-display text-4xl text-ice/90 md:text-6xl"
             >
               <span className={i % 2 ? 'font-serif italic text-ice-2/70' : ''}>{s}</span>
-              <span className="text-2xl text-accent md:text-3xl">✦</span>
+              <span className="text-2xl text-gold md:text-3xl">✦</span>
             </li>
           ))}
         </ul>
@@ -62,8 +62,8 @@ export default function AboutSection() {
             ))}
 
             <Reveal delay={0.2}>
-              <blockquote className="mt-10 border-l-2 border-accent/70 pl-5">
-                <span className="eyebrow mb-2 block text-accent">Clinical focus</span>
+              <blockquote className="mt-10 border-l-2 border-gold/70 pl-5">
+                <span className="eyebrow mb-2 block text-gold">Clinical focus</span>
                 <p className="font-serif text-xl italic leading-snug text-ice sm:text-2xl">&ldquo;{clinicalFocus}&rdquo;</p>
               </blockquote>
             </Reveal>
@@ -104,12 +104,11 @@ export default function AboutSection() {
             <div className="glass relative h-[420px] overflow-hidden rounded-[28px] lg:sticky lg:top-28 lg:h-[560px]">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgb(255_73_61/0.18),transparent_60%)]" />
               <CapsuleScene small />
-              <div className="absolute inset-x-6 bottom-6 flex items-end justify-between">
+              <div className="absolute inset-x-6 bottom-6">
                 <div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent/90">Doctor of Pharmacy</div>
                   <div className="font-display text-3xl text-ice">Pharm.D</div>
                 </div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-mist">Class of 2026</div>
               </div>
             </div>
           </Reveal>

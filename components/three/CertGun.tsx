@@ -20,10 +20,10 @@ function useLabel(text: string) {
     if (ctx) {
       const family = getComputedStyle(document.documentElement).getPropertyValue('--font-archivo').trim() || 'Arial Black';
       ctx.fillStyle = PORCELAIN;
-      ctx.font = `800 150px ${family}`;
+      ctx.font = `800 112px ${family}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(text, 512, 136, 980);
+      ctx.fillText(text, 512, 132, 990);
     }
     const tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;
@@ -36,7 +36,7 @@ function Gun({ shots }: { shots: number }) {
   const group = useRef<THREE.Group>(null);
   const trigger = useRef<THREE.Mesh>(null);
   const kick = useRef(0);
-  const label = useLabel('CERTIFIED');
+  const label = useLabel('CERTIFICATIONS');
 
   useEffect(() => {
     if (shots > 0) kick.current = 1;
@@ -50,7 +50,7 @@ function Gun({ shots }: { shots: number }) {
     const t = state.clock.elapsedTime;
     const px = state.pointer.x;
     const py = state.pointer.y;
-    g.position.x = 0.35 + k * 0.35;
+    g.position.x = 0.3 + k * 0.3;
     g.position.y = Math.sin(t * 1.1) * 0.06;
     g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, 0.12 + k * 0.22 + py * 0.06, 0.15);
     g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, -0.42 + px * 0.18, 0.08);
@@ -62,7 +62,7 @@ function Gun({ shots }: { shots: number }) {
   const dark = <meshStandardMaterial color={CHERRY} roughness={0.6} />;
 
   return (
-    <group ref={group} scale={0.9}>
+    <group ref={group}>
       {/* Body */}
       <RoundedBox args={[3.4, 1.05, 0.82]} radius={0.14} smoothness={5} position={[0, 0.35, 0]}>
         {red}
@@ -94,11 +94,11 @@ function Gun({ shots }: { shots: number }) {
       </mesh>
       {/* Side labels */}
       <mesh position={[-0.05, 0.35, 0.415]}>
-        <planeGeometry args={[2.7, 0.68]} />
+        <planeGeometry args={[3.0, 0.75]} />
         <meshBasicMaterial map={label} transparent toneMapped={false} />
       </mesh>
       <mesh position={[-0.05, 0.35, -0.415]} rotation={[0, Math.PI, 0]}>
-        <planeGeometry args={[2.7, 0.68]} />
+        <planeGeometry args={[3.0, 0.75]} />
         <meshBasicMaterial map={label} transparent toneMapped={false} />
       </mesh>
     </group>
@@ -108,7 +108,7 @@ function Gun({ shots }: { shots: number }) {
 /** A glossy launcher that recoils each time `shots` goes up. */
 export default function CertGun({ shots }: { shots: number }) {
   return (
-    <SceneCanvas className="h-full w-full" camera={{ position: [0, 0, 7], fov: 34 }}>
+    <SceneCanvas className="h-full w-full" camera={{ position: [0, 0, 6.6], fov: 34 }}>
       <ambientLight intensity={0.5} />
       <directionalLight position={[3, 5, 4]} intensity={1.6} color={PORCELAIN} />
       <pointLight position={[-4, -2, 3]} intensity={14} color={VERMILLION} distance={12} />

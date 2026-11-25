@@ -25,6 +25,7 @@ const vertex = /* glsl */ `
   uniform float uSize;
   uniform float uPixelRatio;
   varying float vRed;
+  varying float vGold;
   varying float vAlpha;
 
   void main() {
@@ -49,20 +50,24 @@ const vertex = /* glsl */ `
 
     float strandRed = aStrand < 0.5 ? 1.0 : 0.0;
     vRed = mix(strandRed, step(0.9, aRand), p);
-    float rung = aStrand > 1.5 ? 0.45 : 1.0;
+    vGold = (aStrand > 1.5 ? 1.0 : 0.0) * (1.0 - p) + step(0.55, aRand) * step(aRand, 0.75) * p;
+    float rung = aStrand > 1.5 ? 0.7 : 1.0;
     vAlpha = mix(0.55 * rung, 0.95, p);
   }
 `;
 
 const fragment = /* glsl */ `
   varying float vRed;
+  varying float vGold;
   varying float vAlpha;
   void main() {
     float d = length(gl_PointCoord - 0.5);
     float glow = smoothstep(0.5, 0.0, d);
     vec3 porcelain = vec3(1.0, 0.941, 0.835);
     vec3 red = vec3(1.0, 0.286, 0.239);
-    gl_FragColor = vec4(mix(porcelain, red, vRed), glow * glow * vAlpha);
+    vec3 gold = vec3(0.839, 0.698, 0.431);
+    vec3 c = mix(mix(porcelain, gold, vGold), red, vRed);
+    gl_FragColor = vec4(c, glow * glow * vAlpha);
   }
 `;
 

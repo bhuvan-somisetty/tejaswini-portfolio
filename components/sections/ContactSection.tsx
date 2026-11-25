@@ -86,7 +86,7 @@ export default function ContactSection() {
             <div className="glass relative h-full overflow-hidden rounded-[32px] p-8 md:p-10">
               <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-accent/15 blur-3xl" aria-hidden />
               <div className="relative">
-                <span className="eyebrow text-accent/90">Professional scope</span>
+                <span className="eyebrow text-gold">Professional scope</span>
                 <h3 className="mt-4 font-display text-4xl leading-tight text-ice">{availability.heading}</h3>
                 <p className="mt-3 text-[14px] text-ice-2/85">{availability.note}</p>
                 <ul className="mt-7 flex flex-col gap-3">

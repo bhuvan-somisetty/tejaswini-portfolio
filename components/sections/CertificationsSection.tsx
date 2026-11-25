@@ -24,6 +24,7 @@ const TOTAL = slips.length;
 const tones = [
   'bg-ice text-ink border-ice',
   'bg-accent text-ink border-accent',
+  'bg-gold text-ink border-gold',
   'bg-graphite-2 text-ice border-ice/15',
   'bg-ink-2 text-ice border-accent/40',
 ];
@@ -115,14 +116,25 @@ function Lightbox({ slip, onClose }: { slip: Slip; onClose: () => void }) {
 export default function CertificationsSection() {
   const reduce = useReducedMotion();
   const [stageRef, W] = useWidth<HTMLDivElement>();
-  const [count, setCount] = useState(0);
+  // One launch origin per fired card, measured from the launcher when it fires.
+  const [shots, setShots] = useState<{ x: number; y: number }[]>([]);
+  const count = shots.length;
   const [open, setOpen] = useState<Slip | null>(null);
   const inView = useRef(false);
   const demoed = useRef(false);
   const hold = useRef<{ t?: ReturnType<typeof setTimeout>; i?: ReturnType<typeof setInterval> }>({});
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const wideRef = useRef(true);
 
-  const fire = useCallback(() => setCount(c => Math.min(c + 1, TOTAL)), []);
+  const fire = useCallback(() => {
+    const stage = stageRef.current?.getBoundingClientRect();
+    const gun = triggerRef.current?.getBoundingClientRect();
+    const muzzle =
+      stage && gun
+        ? { x: gun.left - stage.left + gun.width * (wideRef.current ? 0.14 : 0.13), y: gun.top - stage.top + gun.height * 0.41 }
+        : { x: 0, y: 0 };
+    setShots(list => (list.length >= TOTAL ? list : [...list, muzzle]));
+  }, [stageRef]);
   const release = useCallback(() => {
     clearTimeout(hold.current.t);
     clearInterval(hold.current.i);
@@ -150,7 +162,7 @@ export default function CertificationsSection() {
         inView.current = e.isIntersecting;
         if (e.isIntersecting && !demoed.current) {
           demoed.current = true;
-          if (reduce) setCount(TOTAL);
+          if (reduce) setShots(Array.from({ length: TOTAL }, () => ({ x: 0, y: 0 })));
           else setTimeout(fire, 500);
         }
       },
@@ -185,16 +197,12 @@ export default function CertificationsSection() {
     const wide = W >= 900;
     const cols = wide ? 3 : 2;
     const gap = wide ? 18 : 10;
-    const pileW = wide ? W * 0.58 : W;
+    const pileW = wide ? W * 0.55 : W;
     const cardW = Math.min(240, (pileW - gap * (cols - 1)) / cols);
     const cardH = wide ? 136 : 150;
-    const top = wide ? 10 : 250;
+    const top = wide ? 10 : 300;
     const rows = Math.ceil(TOTAL / cols);
-    const height = top + rows * (cardH + gap) + 70;
-    const gun = wide
-      ? { left: W * 0.58, top: Math.max(0, height / 2 - 230), width: W * 0.42, height: 360 }
-      : { left: 0, top: 0, width: W, height: 230 };
-    const muzzle = { x: gun.left + gun.width * (wide ? 0.24 : 0.22), y: gun.top + gun.height * 0.42 };
+    const height = Math.max(top + rows * (cardH + gap) + 30, wide ? 620 : 0);
     const targets = slips.map((_, i) => {
       const j = jitter(i);
       return {
@@ -203,8 +211,12 @@ export default function CertificationsSection() {
         r: j.r,
       };
     });
-    return { wide, cardW, cardH, height, gun, muzzle, targets };
+    return { wide, cardW, cardH, height, targets };
   }, [W]);
+
+  useEffect(() => {
+    wideRef.current = layout.wide;
+  }, [layout.wide]);
 
   const done = count >= TOTAL;
 
@@ -220,35 +232,63 @@ export default function CertificationsSection() {
         />
 
         <div ref={stageRef} className="relative select-none" style={{ height: W ? layout.height : 900 }}>
-          {/* Launcher */}
+          {/* Launcher, with its hint, stays on screen while the pile scrolls past */}
           {W > 0 && (
-            <button
-              ref={triggerRef}
-              type="button"
-              onPointerDown={e => {
-                e.preventDefault();
-                press();
-              }}
-              onPointerUp={release}
-              onPointerLeave={release}
-              onPointerCancel={release}
-              onKeyDown={e => {
-                if (e.key === 'Enter') fire();
-              }}
-              onContextMenu={e => e.preventDefault()}
-              className="absolute cursor-pointer touch-none rounded-[32px] outline-offset-4"
-              style={{ left: layout.gun.left, top: layout.gun.top, width: layout.gun.width, height: layout.gun.height }}
-              aria-label={`Certificate launcher: press to fire one certificate, hold to fire them all (${count} of ${TOTAL} out)`}
-            >
-              <span className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(closest-side,rgb(255_73_61/0.18),transparent)] blur-2xl" />
-              <CertGun shots={count} />
-            </button>
+            <div className={layout.wide ? 'absolute inset-y-0 right-0 w-[45%]' : 'absolute inset-x-0 top-0'}>
+              <div className={layout.wide ? 'sticky top-[max(96px,calc(50svh-250px))]' : ''}>
+                <button
+                  ref={triggerRef}
+                  type="button"
+                  onPointerDown={e => {
+                    e.preventDefault();
+                    press();
+                  }}
+                  onPointerUp={release}
+                  onPointerLeave={release}
+                  onPointerCancel={release}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') fire();
+                  }}
+                  onContextMenu={e => e.preventDefault()}
+                  className={`relative block w-full cursor-pointer touch-none rounded-[32px] outline-offset-4 ${layout.wide ? 'h-[440px]' : 'h-[240px]'}`}
+                  aria-label={`Certificate launcher: press to fire one certificate, hold to fire them all (${count} of ${TOTAL} out)`}
+                >
+                  <span className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(closest-side,rgb(255_73_61/0.2),transparent)] blur-2xl" />
+                  <CertGun shots={count} />
+                </button>
+
+                <div
+                  className="mt-2 flex flex-col items-center gap-2 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-mist"
+                  aria-live="polite"
+                >
+                  <span className="text-ice-2">
+                    <span className="text-accent">{String(count).padStart(2, '0')}</span> / {TOTAL} out
+                  </span>
+                  {done ? (
+                    <button
+                      type="button"
+                      onClick={() => setShots([])}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-ice/15 px-3 py-1.5 text-ice-2 transition-colors hover:border-accent hover:text-accent"
+                    >
+                      <RotateCcw className="h-3 w-3" /> Reload
+                    </button>
+                  ) : (
+                    <span>
+                      <span className="hidden md:inline">
+                        Tap <kbd className="rounded border border-ice/20 px-1.5 py-0.5 text-ice">Space</kbd> or the trigger: one · Hold: all
+                      </span>
+                      <span className="md:hidden">Tap the launcher: one · Hold: all</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Certificates */}
           {slips.slice(0, count).map((s, i) => {
             const t = layout.targets[i];
-            const m = { x: layout.muzzle.x - layout.cardW / 2, y: layout.muzzle.y - layout.cardH / 2 };
+            const m = { x: shots[i].x - layout.cardW / 2, y: shots[i].y - layout.cardH / 2 };
             const arcY = Math.min(m.y, t.y) - (layout.wide ? 160 : 90);
             return (
               <motion.button
@@ -280,28 +320,6 @@ export default function CertificationsSection() {
             );
           })}
 
-          {/* Hint */}
-          <div className="absolute bottom-0 right-0 flex flex-col items-end gap-2 text-right font-mono text-[10px] uppercase tracking-[0.18em] text-mist" aria-live="polite">
-            <span className="text-ice-2">
-              <span className="text-accent">{String(count).padStart(2, '0')}</span> / {TOTAL} out
-            </span>
-            {done ? (
-              <button
-                type="button"
-                onClick={() => setCount(0)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-ice/15 px-3 py-1.5 text-ice-2 transition-colors hover:border-accent hover:text-accent"
-              >
-                <RotateCcw className="h-3 w-3" /> Reload
-              </button>
-            ) : (
-              <span>
-                <span className="hidden md:inline">
-                  Tap <kbd className="rounded border border-ice/20 px-1.5 py-0.5 text-ice">Space</kbd> or the trigger: one · Hold: all
-                </span>
-                <span className="md:hidden">Tap the launcher: one · Hold: all</span>
-              </span>
-            )}
-          </div>
         </div>
 
         {/* Full list for screen readers and search engines */}
@@ -319,7 +337,7 @@ export default function CertificationsSection() {
           <div className="glass mt-10 flex flex-col gap-6 rounded-[28px] p-7 md:flex-row md:items-center md:p-9">
             <div className="md:w-64 md:shrink-0">
               <h3 className="font-display text-3xl text-ice">
-                Seminars &amp; <span className="font-serif italic text-accent-soft">workshops</span>
+                Seminars &amp; <span className="font-serif italic text-luxe pr-[0.04em]">workshops</span>
               </h3>
               <p className="mt-1.5 text-[13px] text-mist">Academic sessions attended on</p>
             </div>

@@ -82,7 +82,7 @@ export default function HeroSection({ ready }: { ready: boolean }) {
           className="shell relative z-10 flex h-full flex-col items-center justify-center text-center"
         >
           <motion.p {...rise(0)} className="eyebrow mb-6 flex items-center gap-3">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
             {profile.eyebrow}
           </motion.p>
 
@@ -98,7 +98,8 @@ export default function HeroSection({ ready }: { ready: boolean }) {
               text={profile.lastName}
               play={ready}
               delay={0.55}
-              className="-mt-[0.1em] block font-display text-[clamp(40px,7vw,104px)] italic text-accent-soft"
+              className="-mt-[0.1em] block font-display text-[clamp(40px,7vw,104px)] italic"
+              wordClassName="text-luxe pr-[0.04em]"
             />
           </h1>
 
