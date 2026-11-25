@@ -29,10 +29,10 @@ export default function HomePage() {
           <HeroSection ready={ready} />
           <AboutSection />
           <ExperienceSection />
+          <CertificationsSection />
           <ExpertiseSection />
           <ResearchSection />
           <SkillsSection />
-          <CertificationsSection />
           <ContactSection />
         </main>
         <FooterSection />

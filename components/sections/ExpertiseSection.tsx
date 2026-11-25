@@ -17,7 +17,7 @@ export default function ExpertiseSection() {
     <section id="expertise" className="section band theme-forest">
       <div className="shell">
         <SectionHeading
-          index="03"
+          index="04"
           label="Clinical Competence Mapping"
           title="Healthcare"
           accent="expertise."

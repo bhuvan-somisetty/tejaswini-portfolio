@@ -101,7 +101,7 @@ export default function ResearchSection() {
   return (
     <section id="research" className="section band theme-steel">
       <div className="shell">
-        <SectionHeading index="04" label="Clinical Studies & Audits" title="Research" accent="& thesis." />
+        <SectionHeading index="05" label="Clinical Studies & Audits" title="Research" accent="& thesis." />
 
         {/* Thesis spotlight */}
         <Reveal>

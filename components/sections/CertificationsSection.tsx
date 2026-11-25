@@ -225,7 +225,7 @@ export default function CertificationsSection() {
     <section id="certifications" className="section band bg-ink">
       <div className="shell">
         <SectionHeading
-          index="06"
+          index="03"
           label="Credentials & Milestones"
           title="Certifications &"
           accent="achievements."

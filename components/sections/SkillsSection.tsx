@@ -10,7 +10,7 @@ export default function SkillsSection() {
   return (
     <section id="skills" className="section band theme-lemon">
       <div className="shell">
-        <SectionHeading index="05" label="Verified Skillsets" title="Skills &" accent="competencies." />
+        <SectionHeading index="06" label="Verified Skillsets" title="Skills &" accent="competencies." />
 
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {skillCategories.map((cat, i) => {
