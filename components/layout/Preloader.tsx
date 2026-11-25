@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { EASE } from '@/components/ui/Motion';
 
-type Stage = 'dot' | 'name' | 'word' | 'grain' | 'done';
+type Stage = 'dot' | 'name' | 'word' | 'out' | 'done';
 
 /** Deterministic scatter so the letters fly in from the same places on every visit. */
 const scatter = (i: number) => ({
@@ -24,11 +24,11 @@ function Letters({ text, from }: { text: string; from: 'scatter' | 'flip' }) {
           style={{ transformPerspective: 800 }}
           initial={
             from === 'scatter'
-              ? { opacity: 0, filter: 'blur(14px)', ...scatter(i) }
+              ? { opacity: 0, filter: 'blur(6px)', ...scatter(i) }
               : { opacity: 0, rotateX: -90, y: '40%', filter: 'blur(8px)' }
           }
           animate={{ opacity: 1, x: 0, y: 0, rotate: 0, rotateX: 0, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, rotateX: 90, y: '-40%', filter: 'blur(8px)', transition: { duration: 0.35, delay: i * 0.025, ease: EASE } }}
+          exit={{ opacity: 0, rotateX: 90, y: '-40%', transition: { duration: 0.35, delay: i * 0.025, ease: EASE } }}
           transition={{ duration: from === 'scatter' ? 1.1 : 0.6, delay: (from === 'scatter' ? 0.05 : 0.03) * i, ease: EASE }}
         >
           {ch}
@@ -40,7 +40,9 @@ function Letters({ text, from }: { text: string; from: 'scatter' | 'flip' }) {
 
 /**
  * Intro: a glowing dot on black, the name assembles from scattered letters,
- * flips into PORTFOLIO, then film grain thickens and clears onto the hero.
+ * flips into PORTFOLIO, then the letters fold away under a light grain and the
+ * curtain fades. The page is only told to start once the curtain has fully gone,
+ * so its entrance animations never compete with the fade.
  */
 export default function Preloader({ onDone }: { onDone: () => void }) {
   const [stage, setStage] = useState<Stage>('dot');
@@ -51,7 +53,7 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
     root.style.overflow = 'hidden';
     const plan: [Stage, number][] = reduce
       ? [['word', 0], ['done', 700]]
-      : [['name', 800], ['word', 2900], ['grain', 4300], ['done', 4900]];
+      : [['name', 800], ['word', 2900], ['out', 4200], ['done', 4750]];
     const timers = plan.map(([s, at]) => setTimeout(() => setStage(s), at));
     return () => {
       timers.forEach(clearTimeout);
@@ -60,18 +62,16 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
   }, []);
 
   useEffect(() => {
-    if (stage !== 'done') return;
-    document.documentElement.style.overflow = '';
-    onDone();
-  }, [stage, onDone]);
+    if (stage === 'done') document.documentElement.style.overflow = '';
+  }, [stage]);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={onDone}>
       {stage !== 'done' && (
         <motion.div
           className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden bg-ink"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
           role="status"
           aria-label="Loading the portfolio of Tejaswini Somisetty"
         >
@@ -99,7 +99,7 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
                 <Letters text="TEJASWINI" from="scatter" />
               </motion.div>
             )}
-            {(stage === 'word' || stage === 'grain') && (
+            {stage === 'word' && (
               <motion.div key="word" className="relative flex flex-col items-center">
                 <Letters text="PORTFOLIO" from="flip" />
                 <motion.span
@@ -118,7 +118,7 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
           <motion.div
             className="grain-burst pointer-events-none absolute inset-0"
             initial={{ opacity: 0 }}
-            animate={{ opacity: stage === 'grain' ? 0.9 : 0 }}
+            animate={{ opacity: stage === 'out' ? 0.35 : 0 }}
             transition={{ duration: 0.5, ease: 'easeIn' }}
           />
         </motion.div>

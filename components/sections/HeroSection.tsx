@@ -49,7 +49,8 @@ export default function HeroSection({ ready }: { ready: boolean }) {
   const morph = useTransform(scrollYProgress, ramp(0.05, 0.9));
   const nameFade = useTransform(scrollYProgress, v => 1 - ramp(0, 0.3)(v));
   const nameScale = useTransform(scrollYProgress, v => 1 - 0.14 * ramp(0, 0.3)(v));
-  const nameBlur = useTransform(scrollYProgress, v => `blur(${10 * ramp(0, 0.3)(v)}px)`);
+  // 'none' at rest so the name is not kept on a filter layer while idle.
+  const nameBlur = useTransform(scrollYProgress, v => (v <= 0 ? 'none' : `blur(${10 * ramp(0, 0.3)(v)}px)`));
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -74,7 +75,8 @@ export default function HeroSection({ ready }: { ready: boolean }) {
           animate={ready ? { opacity: 1 } : undefined}
           transition={{ duration: 1.8, ease: EASE }}
         >
-          {ready && <HelixMorph progress={morph} word="About" small={small} />}
+          {/* Mounted from the start so WebGL warms up behind the intro, not during the handover. */}
+          <HelixMorph progress={morph} word="About" small={small} />
         </motion.div>
 
         <motion.div
@@ -90,30 +92,30 @@ export default function HeroSection({ ready }: { ready: boolean }) {
             <MaskText
               text={profile.firstName}
               play={ready}
-              delay={0.35}
+              delay={0.05}
               className="block font-display text-[clamp(64px,16vw,236px)] tracking-[-0.02em]"
               wordClassName="text-chrome"
             />
             <MaskText
               text={profile.lastName}
               play={ready}
-              delay={0.55}
+              delay={0.22}
               className="-mt-[0.1em] block font-display text-[clamp(40px,7vw,104px)] italic"
               wordClassName="text-luxe pr-[0.04em]"
             />
           </h1>
 
-          <motion.p {...rise(0.6)} className="mt-8 text-base text-mist sm:text-lg">
+          <motion.p {...rise(0.4)} className="mt-8 text-base text-mist sm:text-lg">
             Pharm.D · <RoleRotator play={ready} />
           </motion.p>
-          <motion.p {...rise(0.75)} className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
+          <motion.p {...rise(0.5)} className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-fog">
             {profile.college} · {profile.city}
           </motion.p>
         </motion.div>
 
         {/* Scroll cue */}
         <motion.div style={{ opacity: nameFade }} className="absolute inset-x-0 bottom-8 z-10" aria-hidden>
-          <motion.div {...rise(1)} className="flex flex-col items-center gap-3">
+          <motion.div {...rise(0.7)} className="flex flex-col items-center gap-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-mist">Scroll</span>
           <span className="relative h-10 w-px overflow-hidden bg-line">
             <motion.span

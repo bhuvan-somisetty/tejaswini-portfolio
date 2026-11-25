@@ -114,6 +114,37 @@ function Lightbox({ slip, onClose }: { slip: Slip; onClose: () => void }) {
   );
 }
 
+function LaunchHint({ count, onReload, className = '', live = false }: { count: number; onReload: () => void; className?: string; live?: boolean }) {
+  return (
+    <div
+      className={`flex flex-col gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-mist ${className}`}
+      aria-live={live ? 'polite' : undefined}
+      aria-hidden={live ? undefined : true}
+    >
+      <span className="text-ice-2">
+        <span className="text-accent">{String(count).padStart(2, '0')}</span> / {TOTAL} out
+      </span>
+      {count >= TOTAL ? (
+        <button
+          type="button"
+          onClick={onReload}
+          tabIndex={live ? 0 : -1}
+          className="inline-flex w-fit items-center gap-1.5 rounded-full border border-ice/15 px-3 py-1.5 text-ice-2 transition-colors hover:border-accent hover:text-accent"
+        >
+          <RotateCcw className="h-3 w-3" /> Reload
+        </button>
+      ) : (
+        <span>
+          <span className="hidden md:inline">
+            Tap <kbd className="rounded border border-ice/20 px-1.5 py-0.5 text-ice">Space</kbd> or the trigger: one · Hold: all
+          </span>
+          <span className="md:hidden">Tap the launcher: one · Hold: all</span>
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function CertificationsSection() {
   const reduce = useReducedMotion();
   const [stageRef, W] = useWidth<HTMLDivElement>();
@@ -222,18 +253,19 @@ export default function CertificationsSection() {
     wideRef.current = layout.wide;
   }, [layout.wide]);
 
-  const done = count >= TOTAL;
-
   return (
     <section id="certifications" className="section band bg-ink">
       <div className="shell">
-        <SectionHeading
-          index="03"
-          label="Credentials & Milestones"
-          title="Certifications &"
-          accent="achievements."
-          intro={`${TOTAL} certifications, workshops, webinars and conferences. Fire them out of the launcher and tap any card to see the certificate.`}
-        />
+        <div className="lg:flex lg:items-end lg:justify-between lg:gap-10">
+          <SectionHeading
+            index="03"
+            label="Credentials & Milestones"
+            title="Certifications &"
+            accent="achievements."
+            intro={`${TOTAL} certifications, workshops, webinars and conferences. Fire them out of the launcher and tap any card to see the certificate.`}
+          />
+          <LaunchHint count={count} onReload={() => setShots([])} className="mb-20 hidden shrink-0 items-end text-right lg:flex" />
+        </div>
 
         <div ref={stageRef} className="relative select-none" style={{ height: W ? layout.height : 900 }}>
           {/* Launcher, with its hint, stays on screen while the pile scrolls past */}
@@ -261,30 +293,7 @@ export default function CertificationsSection() {
                   <CertGun shots={count} />
                 </button>
 
-                <div
-                  className="mt-2 flex flex-col items-center gap-2 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-mist"
-                  aria-live="polite"
-                >
-                  <span className="text-ice-2">
-                    <span className="text-accent">{String(count).padStart(2, '0')}</span> / {TOTAL} out
-                  </span>
-                  {done ? (
-                    <button
-                      type="button"
-                      onClick={() => setShots([])}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-ice/15 px-3 py-1.5 text-ice-2 transition-colors hover:border-accent hover:text-accent"
-                    >
-                      <RotateCcw className="h-3 w-3" /> Reload
-                    </button>
-                  ) : (
-                    <span>
-                      <span className="hidden md:inline">
-                        Tap <kbd className="rounded border border-ice/20 px-1.5 py-0.5 text-ice">Space</kbd> or the trigger: one · Hold: all
-                      </span>
-                      <span className="md:hidden">Tap the launcher: one · Hold: all</span>
-                    </span>
-                  )}
-                </div>
+                <LaunchHint count={count} onReload={() => setShots([])} className="mt-2 items-center text-center" live />
               </div>
             </div>
           )}
