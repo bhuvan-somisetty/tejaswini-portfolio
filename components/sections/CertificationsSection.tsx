@@ -132,7 +132,7 @@ export default function CertificationsSection() {
     const gun = triggerRef.current?.getBoundingClientRect();
     const muzzle =
       stage && gun
-        ? { x: gun.left - stage.left + gun.width * (wideRef.current ? 0.14 : 0.13), y: gun.top - stage.top + gun.height * 0.41 }
+        ? { x: gun.left - stage.left + gun.width * (wideRef.current ? 0.2 : 0.18), y: gun.top - stage.top + gun.height * 0.36 }
         : { x: 0, y: 0 };
     setShots(list => (list.length >= TOTAL ? list : [...list, muzzle]));
   }, [stageRef]);
@@ -222,7 +222,7 @@ export default function CertificationsSection() {
   const done = count >= TOTAL;
 
   return (
-    <section id="certifications" className="section">
+    <section id="certifications" className="section band bg-ink">
       <div className="shell">
         <SectionHeading
           index="06"

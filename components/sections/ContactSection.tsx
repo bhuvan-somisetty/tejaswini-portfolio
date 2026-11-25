@@ -29,7 +29,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="section">
+    <section id="contact" className="section band theme-sun">
       <div className="shell">
         <SectionHeading index="07" label="Communication Channel" title="Let’s advance patient care," accent="together." intro={contactIntro} />
 

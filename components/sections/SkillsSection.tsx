@@ -8,7 +8,7 @@ import TiltCard from '@/components/ui/TiltCard';
 
 export default function SkillsSection() {
   return (
-    <section id="skills" className="section">
+    <section id="skills" className="section band theme-lemon">
       <div className="shell">
         <SectionHeading index="05" label="Verified Skillsets" title="Skills &" accent="competencies." />
 

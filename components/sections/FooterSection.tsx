@@ -8,7 +8,7 @@ import { Reveal } from '@/components/ui/Motion';
 export default function FooterSection() {
   const { scrollTo } = useSmoothScroll();
   return (
-    <footer className="relative overflow-hidden border-t border-line pt-16">
+    <footer className="theme-wine relative overflow-hidden pt-16">
       <div className="shell">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>
@@ -41,7 +41,7 @@ export default function FooterSection() {
       <Reveal y={60}>
         <div
           aria-hidden
-          className="mt-12 select-none whitespace-nowrap text-center font-display leading-[0.8] text-transparent [-webkit-text-stroke:1px_rgb(255_240_213/0.16)] text-[clamp(80px,19vw,300px)]"
+          className="mt-12 select-none whitespace-nowrap text-center font-display leading-[0.8] text-transparent [-webkit-text-stroke:1px_color-mix(in_oklab,var(--color-gold)_45%,transparent)] text-[clamp(80px,19vw,300px)]"
         >
           Tejaswini <span className="italic">S.</span>
         </div>

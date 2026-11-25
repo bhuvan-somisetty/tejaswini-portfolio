@@ -49,7 +49,7 @@ function AwareDonut() {
             />
           ))}
         </g>
-        <line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke="#fff0d5" strokeWidth="2" strokeDasharray="3 3" />
+        <line x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke="currentColor" strokeWidth="2" strokeDasharray="3 3" />
       </svg>
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
         <div className="font-display text-5xl text-ice">
@@ -99,7 +99,7 @@ export default function ResearchSection() {
   const [open, setOpen] = useState(false);
 
   return (
-    <section id="research" className="section">
+    <section id="research" className="section band theme-steel">
       <div className="shell">
         <SectionHeading index="04" label="Clinical Studies & Audits" title="Research" accent="& thesis." />
 

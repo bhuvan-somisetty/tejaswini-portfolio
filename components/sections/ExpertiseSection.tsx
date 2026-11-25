@@ -14,7 +14,7 @@ export default function ExpertiseSection() {
   const ActiveIcon = domainIcons[active.icon];
 
   return (
-    <section id="expertise" className="section">
+    <section id="expertise" className="section band theme-forest">
       <div className="shell">
         <SectionHeading
           index="03"

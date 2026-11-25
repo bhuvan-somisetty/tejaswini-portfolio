@@ -88,16 +88,16 @@ html.lenis, html.lenis body { height: auto; }
     font-size: 11px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgb(214 178 110 / 0.85);
+    color: var(--color-gold);
   }
 
   /* Frosted glass surface */
   .glass {
-    background: linear-gradient(180deg, rgb(58 18 34 / 0.38), rgb(21 11 14 / 0.55));
-    border: 1px solid rgb(214 178 110 / 0.14);
+    background: linear-gradient(180deg, color-mix(in oklab, var(--color-graphite-2) 55%, transparent), color-mix(in oklab, var(--color-ink-2) 65%, transparent));
+    border: 1px solid color-mix(in oklab, var(--color-gold) 18%, transparent);
     backdrop-filter: blur(18px) saturate(140%);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
-    box-shadow: inset 0 1px 0 rgb(236 211 160 / 0.08), 0 30px 60px -30px rgb(0 0 0 / 0.6);
+    box-shadow: inset 0 1px 0 color-mix(in oklab, var(--color-ice) 8%, transparent), 0 30px 60px -30px rgb(0 0 0 / 0.45);
   }
 
   .hairline { border-color: var(--color-line); }
@@ -119,7 +119,7 @@ html.lenis, html.lenis body { height: auto; }
 
   /* Champagne gold sheen for italic accent words. */
   .text-luxe {
-    background: linear-gradient(100deg, #f6e4bd 0%, #d6b26e 55%, #b98f4c 100%);
+    background: linear-gradient(100deg, var(--color-gold-soft) 0%, var(--color-gold) 60%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -130,14 +130,14 @@ html.lenis, html.lenis body { height: auto; }
     align-items: center;
     gap: 8px;
     border-radius: 999px;
-    border: 1px solid rgb(255 240 213 / 0.1);
-    background: rgb(255 240 213 / 0.03);
+    border: 1px solid color-mix(in oklab, var(--color-ice) 14%, transparent);
+    background: color-mix(in oklab, var(--color-ice) 4%, transparent);
     padding: 7px 14px;
     font-size: 12.5px;
     color: var(--color-ice-2);
     transition: border-color 0.4s var(--ease-out-expo), color 0.4s var(--ease-out-expo), background 0.4s var(--ease-out-expo);
   }
-  .chip:hover { border-color: rgb(214 178 110 / 0.55); color: var(--color-gold-soft); background: rgb(214 178 110 / 0.07); }
+  .chip:hover { border-color: color-mix(in oklab, var(--color-gold) 60%, transparent); color: var(--color-ice); background: color-mix(in oklab, var(--color-gold) 10%, transparent); }
 }
 
 /* ── Grainy flowing gradient background ── */
@@ -178,6 +178,122 @@ html.lenis, html.lenis body { height: auto; }
   animation: grain-shift 0.18s steps(2) infinite;
 }
 @keyframes grain-shift { 50% { background-position: 37px 61px; } }
+
+
+/* ── Section colour themes: each band re-points the palette tokens ── */
+.theme-cream {
+  --color-ink: #fff8ef;
+  --color-ink-2: #f5ecdf;
+  --color-graphite: #efe4d3;
+  --color-graphite-2: #e6d8c3;
+  --color-ice: #0b3d2e;
+  --color-ice-2: #2c5547;
+  --color-mist: #5b766a;
+  --color-fog: #8a9b92;
+  --color-line: rgb(11 61 46 / 0.13);
+  --color-gold: #0b3d2e;
+  --color-gold-soft: #1f6b52;
+  --color-accent: #0b3d2e;
+  --color-accent-soft: #1f6b52;
+  background-color: var(--color-ink);
+  color: var(--color-ice);
+}
+.theme-wine {
+  --color-ink: #780115;
+  --color-ink-2: #5c0010;
+  --color-graphite: #86091f;
+  --color-graphite-2: #97142c;
+  --color-ice: #fff1e0;
+  --color-ice-2: #f4d6c6;
+  --color-mist: #e2aa9c;
+  --color-fog: #c98276;
+  --color-line: rgb(255 241 224 / 0.15);
+  --color-gold: #f7b638;
+  --color-gold-soft: #ffd27a;
+  --color-accent: #f7b638;
+  --color-accent-soft: #ffc95e;
+  background-color: var(--color-ink);
+  color: var(--color-ice);
+}
+.theme-forest {
+  --color-ink: #0b3d2e;
+  --color-ink-2: #082e22;
+  --color-graphite: #10493a;
+  --color-graphite-2: #185a48;
+  --color-ice: #fff8ef;
+  --color-ice-2: #d3e2d9;
+  --color-mist: #93b6a7;
+  --color-fog: #628b7a;
+  --color-line: rgb(255 248 239 / 0.13);
+  --color-gold: #feffb9;
+  --color-gold-soft: #f2f49c;
+  --color-accent: #f7b638;
+  --color-accent-soft: #ffc95e;
+  background-color: var(--color-ink);
+  color: var(--color-ice);
+}
+.theme-steel {
+  --color-ink: #12233a;
+  --color-ink-2: #0c1a2c;
+  --color-graphite: #19304e;
+  --color-graphite-2: #234066;
+  --color-ice: #f6f7e4;
+  --color-ice-2: #c8d5e5;
+  --color-mist: #8ea7c3;
+  --color-fog: #5e7998;
+  --color-line: rgb(246 247 228 / 0.12);
+  --color-gold: #8db6dd;
+  --color-gold-soft: #feffb9;
+  --color-accent: #feffb9;
+  --color-accent-soft: #f2f49c;
+  background-color: var(--color-ink);
+  color: var(--color-ice);
+}
+.theme-lemon {
+  --color-ink: #feffb9;
+  --color-ink-2: #f6f7a6;
+  --color-graphite: #eef097;
+  --color-graphite-2: #e3e689;
+  --color-ice: #1c3553;
+  --color-ice-2: #34506f;
+  --color-mist: #566d86;
+  --color-fog: #7d8e9f;
+  --color-line: rgb(28 53 83 / 0.15);
+  --color-gold: #5085b5;
+  --color-gold-soft: #3b6e9e;
+  --color-accent: #5085b5;
+  --color-accent-soft: #3b6e9e;
+  background-color: var(--color-ink);
+  color: var(--color-ice);
+}
+.theme-sun {
+  --color-ink: #f7b638;
+  --color-ink-2: #efa826;
+  --color-graphite: #e89f1d;
+  --color-graphite-2: #dc9213;
+  --color-ice: #780115;
+  --color-ice-2: #8a1d2a;
+  --color-mist: #94362f;
+  --color-fog: #a2523b;
+  --color-line: rgb(120 1 21 / 0.2);
+  --color-gold: #780115;
+  --color-gold-soft: #9e1a30;
+  --color-accent: #780115;
+  --color-accent-soft: #9e1a30;
+  background-color: var(--color-ink);
+  color: var(--color-ice);
+}
+
+/* Coloured bands overlap slightly with rounded tops, like stacked sheets. */
+.band {
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  margin-top: -40px;
+  box-shadow: 0 -30px 60px -30px rgb(0 0 0 / 0.45);
+}
+@media (min-width: 768px) {
+  .band { border-top-left-radius: 64px; border-top-right-radius: 64px; margin-top: -64px; }
+}
 
 /* Infinite marquee */
 .marquee { display: flex; width: max-content; animation: marquee 48s linear infinite; }

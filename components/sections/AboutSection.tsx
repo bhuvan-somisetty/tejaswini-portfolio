@@ -43,7 +43,7 @@ export default function AboutSection() {
   const [lead, ...rest] = biography;
   const { scrollTo } = useSmoothScroll();
   return (
-    <section id="about" className="section pt-10 md:pt-16">
+    <section id="about" className="section band theme-cream pt-10 md:pt-16">
       <div className="shell">
         <SectionHeading index="01" label="Biography & Dossier" title="Rooted in the clinic," accent="driven by evidence." />
 
@@ -101,8 +101,8 @@ export default function AboutSection() {
           </div>
 
           <Reveal delay={0.15} className="min-w-0 lg:col-span-5">
-            <div className="glass relative h-[420px] overflow-hidden rounded-[28px] lg:sticky lg:top-28 lg:h-[560px]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgb(31_122_102/0.32),transparent_62%)]" />
+            <div className="theme-forest relative h-[420px] overflow-hidden rounded-[28px] shadow-[0_40px_80px_-40px_rgb(11_61_46/0.7)] lg:sticky lg:top-28 lg:h-[560px]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgb(254_255_185/0.14),transparent_62%)]" />
               <CapsuleScene small />
               <div className="absolute inset-x-6 bottom-6">
                 <div>

@@ -51,11 +51,11 @@ function Gun({ shots }: { shots: number }) {
     const px = state.pointer.x;
     const py = state.pointer.y;
     g.position.x = 0.3 + k * 0.3;
-    g.position.y = Math.sin(t * 1.1) * 0.06;
+    g.position.y = 0.15 + Math.sin(t * 1.1) * 0.06;
     g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, 0.12 + k * 0.22 + py * 0.06, 0.15);
     g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, -0.42 + px * 0.18, 0.08);
     g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, 0.08 - py * 0.08, 0.08);
-    if (trigger.current) trigger.current.position.x = 0.2 + k * 0.12;
+    if (trigger.current) trigger.current.position.x = 0.32 + k * 0.1;
   });
 
   const red = <meshPhysicalMaterial color={VERMILLION} roughness={0.28} clearcoat={1} clearcoatRoughness={0.15} />;
@@ -63,41 +63,35 @@ function Gun({ shots }: { shots: number }) {
 
   return (
     <group ref={group}>
-      {/* Body */}
-      <RoundedBox args={[3.4, 1.05, 0.82]} radius={0.14} smoothness={5} position={[0, 0.35, 0]}>
+      {/* Body: one long block, with the slot the certificates fly out of on its front face */}
+      <RoundedBox args={[3.5, 1.1, 0.84]} radius={0.12} smoothness={5} position={[0, 0.45, 0]}>
         {red}
       </RoundedBox>
-      {/* Barrel block with the slot the certificates fly out of */}
-      <RoundedBox args={[0.7, 0.8, 0.7]} radius={0.12} smoothness={4} position={[-1.85, 0.38, 0]}>
-        {red}
-      </RoundedBox>
-      <mesh position={[-2.21, 0.38, 0]}>
-        <boxGeometry args={[0.02, 0.5, 0.46]} />
+      <mesh position={[-1.755, 0.45, 0]}>
+        <boxGeometry args={[0.02, 0.62, 0.5]} />
         {dark}
       </mesh>
-      {/* Top rail */}
-      <RoundedBox args={[2.4, 0.16, 0.5]} radius={0.06} smoothness={3} position={[0.2, 0.95, 0]}>
+      {/* Grip: drops from the back of the body and rakes backwards */}
+      <RoundedBox args={[0.92, 1.75, 0.76]} radius={0.14} smoothness={5} position={[1.12, -0.5, 0]} rotation={[0, 0, 0.2]}>
         {red}
       </RoundedBox>
-      {/* Grip */}
-      <RoundedBox args={[0.82, 1.75, 0.74]} radius={0.16} smoothness={5} position={[0.95, -0.75, 0]} rotation={[0, 0, -0.28]}>
+      {/* Trigger guard: an open loop in front of the grip */}
+      <RoundedBox args={[0.12, 0.62, 0.3]} radius={0.05} smoothness={3} position={[-0.05, -0.36, 0]}>
         {red}
       </RoundedBox>
-      {/* Trigger guard and trigger */}
-      <mesh position={[0.15, -0.38, 0]} rotation={[0, 0, Math.PI]}>
-        <torusGeometry args={[0.36, 0.07, 16, 40, Math.PI]} />
+      <RoundedBox args={[0.86, 0.12, 0.3]} radius={0.05} smoothness={3} position={[0.32, -0.64, 0]}>
         {red}
-      </mesh>
-      <mesh ref={trigger} position={[0.2, -0.38, 0]} rotation={[0, 0, 0.35]}>
-        <boxGeometry args={[0.1, 0.42, 0.16]} />
-        <meshStandardMaterial color={PORCELAIN} roughness={0.35} />
+      </RoundedBox>
+      <mesh ref={trigger} position={[0.32, -0.28, 0]} rotation={[0, 0, -0.35]}>
+        <boxGeometry args={[0.09, 0.38, 0.14]} />
+        <meshStandardMaterial color="#a3201a" roughness={0.4} />
       </mesh>
       {/* Side labels */}
-      <mesh position={[-0.05, 0.35, 0.415]}>
+      <mesh position={[-0.12, 0.45, 0.425]}>
         <planeGeometry args={[3.0, 0.75]} />
         <meshBasicMaterial map={label} transparent toneMapped={false} />
       </mesh>
-      <mesh position={[-0.05, 0.35, -0.415]} rotation={[0, Math.PI, 0]}>
+      <mesh position={[-0.12, 0.45, -0.425]} rotation={[0, Math.PI, 0]}>
         <planeGeometry args={[3.0, 0.75]} />
         <meshBasicMaterial map={label} transparent toneMapped={false} />
       </mesh>
