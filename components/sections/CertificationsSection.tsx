@@ -25,6 +25,7 @@ const tones = [
   'bg-ice text-ink border-ice',
   'bg-accent text-ink border-accent',
   'bg-gold text-ink border-gold',
+  'bg-emerald-deep text-ice border-gold/35',
   'bg-graphite-2 text-ice border-ice/15',
   'bg-ink-2 text-ice border-accent/40',
 ];

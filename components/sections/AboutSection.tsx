@@ -17,7 +17,7 @@ function SpecialtyMarquee() {
     <div className="mt-24 md:mt-32">
       <Reveal>
         <div className="shell mb-6 flex items-center gap-3">
-          <span className="h-px w-10 bg-accent/50" />
+          <span className="h-px w-10 bg-gold/50" />
           <h3 className="eyebrow">Areas of specialization</h3>
         </div>
       </Reveal>
@@ -102,11 +102,11 @@ export default function AboutSection() {
 
           <Reveal delay={0.15} className="min-w-0 lg:col-span-5">
             <div className="glass relative h-[420px] overflow-hidden rounded-[28px] lg:sticky lg:top-28 lg:h-[560px]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgb(255_73_61/0.18),transparent_60%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgb(31_122_102/0.32),transparent_62%)]" />
               <CapsuleScene small />
               <div className="absolute inset-x-6 bottom-6">
                 <div>
-                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent/90">Doctor of Pharmacy</div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-gold/90">Doctor of Pharmacy</div>
                   <div className="font-display text-3xl text-ice">Pharm.D</div>
                 </div>
               </div>
@@ -118,7 +118,7 @@ export default function AboutSection() {
         <div className="mt-16 md:mt-24">
           <Reveal>
             <div className="mb-8 flex items-center gap-3">
-              <span className="h-px w-10 bg-accent/50" />
+              <span className="h-px w-10 bg-gold/50" />
               <h3 className="eyebrow">Clinical dossier</h3>
             </div>
           </Reveal>
@@ -129,7 +129,7 @@ export default function AboutSection() {
                 <Reveal as="li" key={c.label} delay={i * 0.06}>
                   <TiltCard max={6} className="glass rounded-3xl">
                     <div className="flex h-full items-start gap-4 p-6">
-                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-accent/30 bg-accent/10 text-accent">
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-gold/30 bg-gold/10 text-gold">
                         <Icon className="h-5 w-5" strokeWidth={1.6} />
                       </span>
                       <div>

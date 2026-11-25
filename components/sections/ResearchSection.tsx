@@ -56,7 +56,7 @@ function AwareDonut() {
           <CountUp value={6.74} decimals={2} suffix="%" />
         </div>
         <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-mist">Access use</div>
-        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">Target ≥ {thesis.target}%</div>
+        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-gold">Target ≥ {thesis.target}%</div>
       </div>
     </figure>
   );
@@ -71,17 +71,17 @@ function Methodology() {
     <div className="mt-20">
       <Reveal>
         <div className="mb-8 flex items-center gap-3">
-          <span className="h-px w-10 bg-accent/50" />
+          <span className="h-px w-10 bg-gold/50" />
           <h3 className="eyebrow">Research methodology</h3>
         </div>
       </Reveal>
       <ol ref={ref} className="relative grid gap-8 md:grid-cols-5 md:gap-5">
         <div className="absolute left-[15px] top-2 hidden h-px w-[calc(100%-30px)] bg-line md:block" aria-hidden>
-          <motion.div style={{ scaleX: grow }} className="h-full origin-left bg-accent" />
+          <motion.div style={{ scaleX: grow }} className="h-full origin-left bg-gold" />
         </div>
         {thesis.methodology.map((m, i) => (
           <Reveal as="li" key={m.name} delay={i * 0.08} className="relative flex gap-4 md:block">
-            <span className="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-accent/50 bg-ink font-mono text-[10px] text-accent md:mb-5 md:-mt-2">
+            <span className="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/50 bg-ink font-mono text-[10px] text-gold md:mb-5 md:-mt-2">
               0{i + 1}
             </span>
             <div>
@@ -106,7 +106,7 @@ export default function ResearchSection() {
         {/* Thesis spotlight */}
         <Reveal>
           <TiltCard max={2.5} className="glass overflow-hidden rounded-[36px]">
-            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/15 blur-3xl" aria-hidden />
+            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gold/15 blur-3xl" aria-hidden />
             <div className="relative p-7 md:p-12">
               <div className="flex flex-wrap items-center gap-2.5">
                 {thesis.tags.map(t => (
@@ -173,7 +173,7 @@ export default function ResearchSection() {
         <div className="mt-20">
           <Reveal>
             <div className="mb-8 flex items-center gap-3">
-              <span className="h-px w-10 bg-accent/50" />
+              <span className="h-px w-10 bg-gold/50" />
               <h3 className="eyebrow">WHO AWaRe classification framework</h3>
             </div>
           </Reveal>

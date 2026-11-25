@@ -117,7 +117,7 @@ export default function HeroSection({ ready }: { ready: boolean }) {
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-mist">Scroll</span>
           <span className="relative h-10 w-px overflow-hidden bg-line">
             <motion.span
-              className="absolute inset-x-0 top-0 h-1/2 bg-accent"
+              className="absolute inset-x-0 top-0 h-1/2 bg-gold"
               animate={{ y: ['-100%', '200%'] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
             />

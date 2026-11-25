@@ -103,7 +103,7 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
               <motion.div key="word" className="relative flex flex-col items-center">
                 <Letters text="PORTFOLIO" from="flip" />
                 <motion.span
-                  className="mt-3 font-serif text-[clamp(18px,2.4vw,30px)] italic text-accent-soft"
+                  className="mt-3 font-serif text-[clamp(18px,2.4vw,30px)] italic text-gold-soft"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.45, ease: EASE }}

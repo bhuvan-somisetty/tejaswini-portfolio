@@ -20,7 +20,7 @@ export default function SkillsSection() {
                 <TiltCard max={7} className="glass h-full rounded-[28px]">
                   <div className="relative flex h-full flex-col p-7">
                     <div className="flex items-center justify-between">
-                      <span className="grid h-12 w-12 place-items-center rounded-2xl border border-accent/30 bg-accent/10 text-accent">
+                      <span className="grid h-12 w-12 place-items-center rounded-2xl border border-gold/30 bg-gold/10 text-gold">
                         <Icon className="h-5 w-5" strokeWidth={1.6} />
                       </span>
                       <span className="font-mono text-[11px] text-fog">0{i + 1}</span>
@@ -29,7 +29,7 @@ export default function SkillsSection() {
                     <ul className="mt-5 flex flex-col gap-2.5 border-t border-line pt-5">
                       {cat.skills.map(s => (
                         <li key={s} className="flex items-center gap-3 text-[14px] text-ice-2/90">
-                          <span className="h-1 w-1 shrink-0 rounded-full bg-accent" />
+                          <span className="h-1 w-1 shrink-0 rounded-full bg-gold" />
                           {s}
                         </li>
                       ))}

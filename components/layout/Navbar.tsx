@@ -71,7 +71,7 @@ export default function Navbar({ show }: { show: boolean }) {
             </span>
             <span className="hidden font-display text-lg tracking-tight text-ice sm:block">
               {profile.firstName}
-              <span className="text-accent">.</span>
+              <span className="text-gold">.</span>
             </span>
           </button>
 
@@ -152,7 +152,7 @@ export default function Navbar({ show }: { show: boolean }) {
                     onClick={() => go(link.id)}
                     className="flex w-full items-baseline gap-4 py-1.5 text-left font-display text-[38px] leading-tight text-ice"
                   >
-                    <span className="font-mono text-[11px] text-accent">0{i + 1}</span>
+                    <span className="font-mono text-[11px] text-gold">0{i + 1}</span>
                     {link.label}
                   </button>
                 </motion.li>
