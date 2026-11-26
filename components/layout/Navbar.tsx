@@ -6,6 +6,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { navLinks, profile } from '@/lib/content';
 import { useSmoothScroll } from '@/components/providers/SmoothScroll';
 import { EASE } from '@/components/ui/Motion';
+import ResumeButton from '@/components/ui/ResumeButton';
 
 export default function Navbar({ show }: { show: boolean }) {
   const { scrollTo, stop, start } = useSmoothScroll();
@@ -99,6 +100,7 @@ export default function Navbar({ show }: { show: boolean }) {
           </ul>
 
           <div className="flex items-center gap-2">
+            <ResumeButton className="mr-1 px-2.5 py-2 text-[11px] sm:mr-2 sm:text-[12px]" />
             <a
               href={`mailto:${profile.email}`}
               className="group hidden items-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-[13px] font-semibold text-ink transition-colors hover:bg-accent-soft sm:inline-flex"

@@ -6,6 +6,7 @@ import { contactIntro, profile } from '@/lib/content';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Motion';
 import { LinkedInIcon } from '@/components/ui/Icons';
+import ResumeButton from '@/components/ui/ResumeButton';
 
 const links = [
   { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, icon: Mail },
@@ -71,14 +72,15 @@ export default function ContactSection() {
               })}
             </ul>
 
-            <Reveal delay={0.2}>
+            <Reveal delay={0.2} className="mt-10 flex flex-wrap items-center gap-4">
               <button
                 onClick={sendMessage}
-                className="group mt-10 inline-flex items-center gap-2.5 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-ink transition-colors hover:bg-accent-soft"
+                className="group inline-flex items-center gap-2.5 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-ink transition-colors hover:bg-accent-soft"
               >
                 {copied ? <Check className="h-4 w-4" /> : <Mail className="h-4 w-4" />}
                 {copied ? 'Email copied!' : 'Send a message'}
               </button>
+              <ResumeButton className="rounded-full border border-ice/15 px-7 py-4 text-[13px] hover:border-gold/60 focus-visible:border-gold/60" />
             </Reveal>
           </div>
         </div>

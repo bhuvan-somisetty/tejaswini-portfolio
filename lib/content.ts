@@ -284,6 +284,53 @@ export const thesis = {
   expertise: ['Antibiotic Stewardship', 'Rational Drug Use', 'Evidence-Based Medicine', 'Clinical Research', 'Healthcare Outcomes'],
 };
 
+/** A document shown page by page in the in-page viewer (images, never the PDF). */
+export interface ViewerDoc {
+  kind: string;
+  kicker: string;
+  title: string;
+  dir: string;
+  pageCount: number;
+  pageW: number;
+  pageH: number;
+  footer: string;
+  /** Clickable areas over the page image: [left, top, width, height] in % of the page. */
+  links?: { page: number; href: string; label: string; box: [number, number, number, number] }[];
+}
+
+export const thesisDoc: ViewerDoc = {
+  kind: 'Thesis',
+  kicker: 'Pharm.D thesis · view only',
+  title: thesis.title,
+  dir: '/thesis',
+  pageCount: 112,
+  pageW: 1100,
+  pageH: 1556,
+  footer: '© Rajiv Gandhi University of Health Sciences, Karnataka · View only',
+};
+
+export const resumeDoc: ViewerDoc = {
+  kind: 'Resume',
+  kicker: 'Resume · view only',
+  title: 'Tejaswini Somisetty',
+  dir: '/resume',
+  pageCount: 1,
+  pageW: 1400,
+  pageH: 1982,
+  footer: '© Tejaswini Somisetty · View only',
+  links: [
+    { page: 1, href: 'tel:+917995714599', label: 'Call +91 79957 14599', box: [9.6, 11.5, 12, 2.4] },
+    { page: 1, href: 'https://tejaswini-portfolio-blond.vercel.app/', label: 'Portfolio website', box: [41.4, 11.5, 20.4, 2.4] },
+    { page: 1, href: 'mailto:tejaswinisomisetty22@gmail.com', label: 'Email Tejaswini', box: [65.3, 11.5, 25.2, 2.4] },
+    {
+      page: 1,
+      href: 'https://drive.google.com/file/d/1FvXSQWaDf1-_b1_ZJQ06KlufTIWXF9Ov/view?usp=drivesdk',
+      label: 'View thesis (PDF on Google Drive)',
+      box: [79.9, 43.5, 10.5, 2],
+    },
+  ],
+};
+
 export type SkillIcon = 'clinical' | 'quality' | 'research' | 'technical';
 
 export const skillCategories: { title: string; icon: SkillIcon; skills: string[] }[] = [

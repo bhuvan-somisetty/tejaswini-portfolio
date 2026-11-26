@@ -3,11 +3,11 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { BookOpen, Lock } from 'lucide-react';
-import { thesis } from '@/lib/content';
+import { thesis, thesisDoc } from '@/lib/content';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { CountUp, EASE, Reveal } from '@/components/ui/Motion';
 import TiltCard from '@/components/ui/TiltCard';
-import ThesisViewer from '@/components/ui/ThesisViewer';
+import DocViewer from '@/components/ui/DocViewer';
 
 const R = 84;
 const C = 2 * Math.PI * R;
@@ -213,7 +213,7 @@ export default function ResearchSection() {
         </Reveal>
       </div>
 
-      <ThesisViewer open={open} onClose={() => setOpen(false)} title={thesis.title} />
+      <DocViewer open={open} onClose={() => setOpen(false)} doc={thesisDoc} />
     </section>
   );
 }

@@ -320,3 +320,50 @@ html.lenis, html.lenis body { height: auto; }
   text-transform: uppercase;
   letter-spacing: -0.02em;
 }
+
+/* RESUME button: letters roll up into a gold copy one after another, the page icon lifts. */
+.resume-btn {
+  --roll-to: var(--color-gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+  transition: color 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo), background-color 0.4s var(--ease-out-expo);
+}
+.resume-btn .roll {
+  display: inline-flex;
+  overflow: hidden;
+  height: 1.25em;
+  line-height: 1.25em;
+}
+.resume-btn .roll > span {
+  position: relative;
+  display: block;
+  transition: transform 0.55s var(--ease-out-expo);
+  transition-delay: calc(var(--i) * 32ms);
+}
+.resume-btn .roll > span::after {
+  content: attr(data-c);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  color: var(--roll-to);
+}
+.resume-btn .resume-icon {
+  transition: transform 0.55s var(--ease-out-expo), color 0.4s var(--ease-out-expo);
+}
+.resume-btn:hover,
+.resume-btn:focus-visible {
+  color: var(--roll-to);
+}
+.resume-btn:hover .roll > span,
+.resume-btn:focus-visible .roll > span {
+  transform: translateY(-100%);
+}
+.resume-btn:hover .resume-icon,
+.resume-btn:focus-visible .resume-icon {
+  transform: translateY(-2px) rotate(-8deg) scale(1.08);
+}
